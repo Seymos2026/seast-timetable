@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SEAST Fall 2026-27 course timetable: day grid, instructor and room filters, live 'running now' view and printable lab room sheets.">
+<title>SEAST Fall 2026 Timetable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F3F6F2;
+    --surface:#FFFFFF;
+    --surface-2:#E9EEE8;
+    --ink:#151F1B;
+    --ink-2:#5C6D65;
+    --line:#D6DED7;
+    --line-strong:#BCC7BE;
+    --accent:#0E5F52;
+    --accent-ink:#0E5F52;
+    --accent-soft:#D9EBE5;
+    --lab:#A94A24;
+    --lab-soft:#F6E4D9;
+    --alert:#A81F38;
+    --alert-soft:#F7DCE1;
+    --shadow:0 1px 2px rgba(21,31,27,.06), 0 8px 24px -18px rgba(21,31,27,.35);
+    --radius:10px;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F1513;
+      --surface:#161F1C;
+      --surface-2:#1D2825;
+      --ink:#E7EDE9;
+      --ink-2:#93A69D;
+      --line:#28352F;
+      --line-strong:#38473F;
+      --accent:#54C3A9;
+      --accent-ink:#7FD8C1;
+      --accent-soft:#15302A;
+      --lab:#E39264;
+      --lab-soft:#31211A;
+      --alert:#F0798E;
+      --alert-soft:#33191F;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -20px rgba(0,0,0,.9);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F1513;
+    --surface:#161F1C;
+    --surface-2:#1D2825;
+    --ink:#E7EDE9;
+    --ink-2:#93A69D;
+    --line:#28352F;
+    --line-strong:#38473F;
+    --accent:#54C3A9;
+    --accent-ink:#7FD8C1;
+    --accent-soft:#15302A;
+    --lab:#E39264;
+    --lab-soft:#31211A;
+    --alert:#F0798E;
+    --alert-soft:#33191F;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -20px rgba(0,0,0,.9);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+    font-size:15px;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px 72px}
+
+  /* ---------- masthead ---------- */
+  header.mast{
+    padding:30px 0 18px;
+    display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between;
+  }
+  .mast h1{
+    font-family:Archivo,system-ui,sans-serif;
+    font-weight:700;font-size:clamp(24px,3.4vw,34px);
+    letter-spacing:-.02em;margin:0;text-wrap:balance;
+  }
+  .mast .sub{color:var(--ink-2);font-size:14px;margin-top:4px}
+  .clock{
+    text-align:right;font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .clock .t{font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .clock .z{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+
+  /* ---------- controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:20;
+    background:color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:10px 0 12px;
+    margin-bottom:22px;
+  }
+  .daybar{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+  .day{
+    flex:0 0 auto;border:1px solid var(--line);background:var(--surface);
+    color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;
+    font-family:Archivo,sans-serif;font-weight:600;font-size:13px;letter-spacing:.01em;
+    display:flex;align-items:center;gap:7px;transition:background .12s,border-color .12s,color .12s;
+  }
+  .day .n{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+    color:var(--ink-2);font-variant-numeric:tabular-nums;
+  }
+  .day:hover{border-color:var(--line-strong)}
+  .day[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  .day[aria-pressed="true"] .n{color:rgba(255,255,255,.72)}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .day[aria-pressed="true"]{color:#08120F}
+    :root:not([data-theme="light"]) .day[aria-pressed="true"] .n{color:rgba(8,18,15,.62)}
+  }
+  :root[data-theme="dark"] .day[aria-pressed="true"]{color:#08120F}
+  :root[data-theme="dark"] .day[aria-pressed="true"] .n{color:rgba(8,18,15,.62)}
+
+  .daybar.inactive{opacity:.45}
+  .row2{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+  .seg button{
+    border:0;background:transparent;color:var(--ink-2);cursor:pointer;
+    padding:7px 13px;font-family:Archivo,sans-serif;font-weight:600;font-size:12.5px;
+    letter-spacing:.02em;border-right:1px solid var(--line);
+  }
+  .seg button:last-child{border-right:0}
+  .seg button[aria-pressed="true"]{background:var(--surface-2);color:var(--ink)}
+  .seg.hot{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .seg.hot button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink)}
+  select,input[type="search"]{
+    font-family:"Source Sans 3",sans-serif;font-size:13.5px;color:var(--ink);
+    background:var(--surface);border:1px solid var(--line);border-radius:8px;
+    padding:7px 10px;min-height:35px;
+  }
+  select{max-width:230px}
+  input[type="search"]{width:190px}
+  .nowbtn{
+    margin-left:auto;border:1px solid var(--accent);background:var(--accent);color:#fff;
+    border-radius:8px;padding:8px 15px;cursor:pointer;
+    font-family:Archivo,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .nowbtn{color:#08120F}}
+  :root[data-theme="dark"] .nowbtn{color:#08120F}
+  .nowbtn[aria-pressed="true"]{box-shadow:0 0 0 3px var(--accent-soft)}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .linkbtn{
+    border:1px solid var(--line);background:var(--surface);color:var(--ink-2);
+    border-radius:8px;padding:7px 11px;cursor:pointer;font-size:12.5px;font-family:Archivo,sans-serif;font-weight:600;
+  }
+  .linkbtn:hover{color:var(--ink);border-color:var(--line-strong)}
+  button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* ---------- status ---------- */
+  .status{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;justify-content:space-between;
+    margin:0 0 14px;
+  }
+  .status h2{
+    font-family:Archivo,sans-serif;font-weight:600;font-size:17px;margin:0;letter-spacing:-.01em;
+  }
+  .status .count{font-size:13px;color:var(--ink-2);font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+
+  /* ---------- schedule rows ---------- */
+  .hourgroup{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+  .hourgroup:first-of-type{border-top:0;padding-top:2px}
+  .hourlabel{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;color:var(--ink-2);
+    letter-spacing:.02em;padding-top:12px;position:sticky;top:118px;align-self:start;
+    font-variant-numeric:tabular-nums;
+  }
+  .stack{display:flex;flex-direction:column;gap:8px;min-width:0}
+
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:var(--radius);padding:11px 14px;box-shadow:var(--shadow);
+    display:grid;grid-template-columns:1fr auto;gap:10px 18px;align-items:start;
+  }
+  .card.lab{border-left-color:var(--lab)}
+  .card.live{outline:2px solid var(--accent);outline-offset:1px}
+  .main{min-width:0}
+  .titleline{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+  .code{
+    font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:13px;letter-spacing:-.01em;
+    color:var(--accent-ink);
+  }
+  .card.lab .code{color:var(--lab)}
+  .cname{font-family:Archivo,sans-serif;font-weight:600;font-size:14.5px;letter-spacing:-.005em}
+  .meta{margin-top:3px;color:var(--ink-2);font-size:13.5px;display:flex;flex-wrap:wrap;gap:4px 12px}
+  .meta .who{color:var(--ink)}
+  .meta .tba{font-style:italic}
+  .right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;text-align:right}
+  .time{
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:500;white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
+  .chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .chip{
+    font-family:Archivo,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 7px;border-radius:5px;background:var(--surface-2);color:var(--ink-2);
+  }
+  .chip.lec{background:var(--accent-soft);color:var(--accent-ink)}
+  .chip.lab{background:var(--lab-soft);color:var(--lab)}
+  .chip.live{background:var(--accent);color:#fff}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip.live{color:#08120F}}
+  :root[data-theme="dark"] .chip.live{color:#08120F}
+  .enr{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);
+    font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+  .enr.full{color:var(--alert);font-weight:600}
+  .bar{width:64px;height:4px;border-radius:3px;background:var(--surface-2);overflow:hidden;margin-top:2px}
+  .bar i{display:block;height:100%;background:var(--accent)}
+  .bar.full i{background:var(--alert)}
+  .card.lab .bar i{background:var(--lab)}
+  .card.lab .bar.full i{background:var(--alert)}
+
+  /* ---------- timeline grid ---------- */
+  .gridbox{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);overflow-x:auto;overflow-y:hidden;
+  }
+  .grid{min-width:1040px}
+  .axisrow{display:flex;border-bottom:1px solid var(--line-strong);background:var(--surface);border-radius:12px 12px 0 0}
+  .daycol{flex:0 0 96px;border-right:1px solid var(--line-strong)}
+  .axisrow .daycol{display:flex;align-items:flex-end;padding:0 0 6px 14px}
+  .axisrow .daycol span{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-2);
+  }
+  .lanes{position:relative;flex:1}
+  .axisrow .lanes{height:32px}
+  .tick{position:absolute;top:0;bottom:0;border-left:1px solid var(--line)}
+  .tick.major{border-left-color:var(--line-strong)}
+  .tick b{
+    position:absolute;top:8px;left:5px;font-family:"IBM Plex Mono",monospace;
+    font-size:11px;font-weight:500;color:var(--ink-2);white-space:nowrap;
+  }
+  .grow{display:flex;border-bottom:1px solid var(--line)}
+  .grow:last-child{border-bottom:0}
+  .grow:nth-child(odd) .lanes{background:var(--surface-2)}
+  .grow .daycol{display:flex;flex-direction:column;justify-content:center;padding:10px 0 10px 14px}
+  .grow .dayname{font-family:Archivo,sans-serif;font-weight:600;font-size:14px}
+  .grow .dayname.today::after{
+    content:"today";margin-left:6px;font-family:"IBM Plex Mono",monospace;
+    font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);
+  }
+  .grow .daycount{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-2)}
+  .lanes.body{padding:7px 0}
+  .blk{
+    position:absolute;border-radius:6px;padding:4px 7px;overflow:hidden;
+    background:color-mix(in srgb, var(--pc) 13%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--pc) 38%, transparent);
+    border-left:3px solid var(--pc);
+  }
+  .blk .c{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;color:var(--pc);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em;
+  }
+  .blk .m{font-size:11px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .blk.livenow{box-shadow:0 0 0 2px var(--accent)}
+  .blk.overfull .c::after{content:" ●";color:var(--alert)}
+  .nowline{position:absolute;top:0;bottom:0;width:2px;background:var(--alert);z-index:2}
+  .nowline::before{
+    content:"";position:absolute;top:-4px;left:-3px;width:8px;height:8px;
+    border-radius:50%;background:var(--alert);
+  }
+  .gempty{
+    position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    font-size:12px;color:var(--ink-2);
+  }
+  .gridnote{margin-top:10px;font-size:12.5px;color:var(--ink-2)}
+
+  /* ---------- week view ---------- */
+  .weeksum{
+    display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:11px 16px;margin-bottom:18px;box-shadow:var(--shadow);
+  }
+  .weeksum .k{
+    font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:600;
+    font-variant-numeric:tabular-nums;color:var(--accent-ink);
+  }
+  .weeksum .l{font-size:12.5px;color:var(--ink-2);margin-left:5px}
+  .dayblock{margin-bottom:26px}
+  .dayhead{
+    display:flex;align-items:baseline;gap:10px;
+    padding:0 0 8px;border-bottom:2px solid var(--line-strong);margin-bottom:4px;
+    position:sticky;top:106px;z-index:5;
+    background:linear-gradient(var(--bg) 78%, transparent);
+  }
+  .dayhead h3{
+    font-family:Archivo,sans-serif;font-weight:700;font-size:15px;margin:0;
+    letter-spacing:.04em;text-transform:uppercase;
+  }
+  .dayhead .dn{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);
+    font-variant-numeric:tabular-nums;
+  }
+  .dayblock .hourgroup:first-of-type{padding-top:10px}
+  .dayblock .hourlabel{position:static}
+  .empty{
+    border:1px dashed var(--line-strong);border-radius:var(--radius);padding:26px 18px;text-align:center;
+    color:var(--ink-2);background:var(--surface);
+  }
+  .empty strong{display:block;color:var(--ink);font-family:Archivo,sans-serif;font-size:15px;margin-bottom:4px}
+
+  /* ---------- locate me ---------- */
+  .row3{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:9px}
+  .locwrap{
+    display:flex;align-items:stretch;border:1px solid var(--accent);border-radius:8px;
+    overflow:hidden;background:var(--surface);
+  }
+  .locwrap:focus-within{box-shadow:0 0 0 3px var(--accent-soft)}
+  .loclabel{
+    display:flex;align-items:center;padding:0 12px;background:var(--accent-soft);color:var(--accent-ink);
+    font-family:Archivo,sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;
+    border-right:1px solid var(--accent);white-space:nowrap;
+  }
+  #locate{border:0;border-radius:0;width:290px;background:transparent;min-height:36px}
+  #locate:focus-visible{outline:none}
+  .lochelp{font-size:12.5px;color:var(--ink-2)}
+
+  .loccards{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .loc{
+    background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:var(--radius);padding:13px 16px;box-shadow:var(--shadow);
+  }
+  .loc.busy{border-left-color:var(--alert)}
+  .loc-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .loc-name{font-family:Archivo,sans-serif;font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .loc-chip{
+    font-family:Archivo,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent-ink);
+  }
+  .loc.busy .loc-chip{background:var(--alert-soft);color:var(--alert)}
+  .loc-week{margin-left:auto}
+  .loc-line{margin:8px 0 0;font-size:15px}
+  .loc-line b{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-weight:600}
+  .loc-sub{margin:4px 0 0;font-size:13.5px;color:var(--ink-2)}
+  .loc-rest{
+    margin:9px 0 0;padding-top:8px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:4px 14px;
+  }
+  .loc-rest span{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+  .loc-none{
+    background:var(--surface);border:1px dashed var(--line-strong);border-radius:var(--radius);
+    padding:14px 16px;font-size:13.5px;color:var(--ink-2);margin:0 0 20px;
+  }
+
+  .roomhint{
+    margin:-6px 0 14px;font-size:13px;color:var(--ink-2);
+    display:flex;gap:7px;align-items:baseline;
+  }
+  .roomhint:empty{display:none}
+  .roomhint b{color:var(--ink);font-weight:600}
+  .linkbtn[disabled]{opacity:.45;cursor:not-allowed}
+  #printBtn:not([disabled]){border-color:var(--accent);color:var(--accent-ink)}
+
+  /* ---------- printable room sheet (A4 landscape) ---------- */
+  .sheet{display:none}
+  @media print{
+    @page{size:A4 landscape;margin:8mm}
+    :root{color-scheme:light}
+    body{background:#fff;color:#111}
+    .wrap{max-width:none;padding:0}
+    .mast,.controls,.status,.roomhint,#out,#locOut,footer{display:none!important}
+    .sheet{display:flex;flex-direction:column;height:186mm;font-family:"Source Sans 3",Arial,sans-serif}
+  }
+  .sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sh-title{
+    font-family:Archivo,Arial,sans-serif;font-size:19pt;font-weight:700;color:#333;
+    text-align:center;margin:0 0 4mm;letter-spacing:-.01em;
+  }
+  .sh-room{
+    font-family:Archivo,Arial,sans-serif;font-size:14pt;font-weight:700;color:#2E5FA3;
+    text-align:center;margin:0 0 2.5mm;
+  }
+  .sh-rule{border:0;border-top:1.2pt solid #2E5FA3;margin:0 0 4mm}
+  .sh-table{
+    width:100%;border-collapse:collapse;table-layout:fixed;
+    font-size:9pt;color:#222;flex:1;
+  }
+  .sh-table th{
+    background:#3B5EA5;color:#fff;font-family:Archivo,Arial,sans-serif;font-size:10pt;font-weight:700;
+    padding:2.2mm 1.5mm;border:.5pt solid #fff;text-align:center;
+  }
+  .sh-table th.t-time{width:19%}
+  .sh-table td{
+    border:.5pt solid #D3DAE3;padding:2.2mm 2mm;text-align:center;vertical-align:middle;height:21mm;
+  }
+  .sh-table td.t-time{
+    background:#E9F0F8;font-weight:600;font-size:9.5pt;color:#333;
+    font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+  .sh-table tr:nth-child(even) td.t-time{background:#F4F8FC}
+  .sh-table td.free{color:#8A939C;font-style:italic;font-size:8.5pt;background:#FCFDFE}
+  .sh-table tr:nth-child(even) td.free{background:#F7F9FB}
+  .sh-table td.occ{background:#E4EFDF}
+  .sh-cell + .sh-cell{margin-top:1.6mm;padding-top:1.6mm;border-top:.5pt dotted #A9BFA2}
+  .sh-code{font-weight:700;color:#2E5FA3;font-size:9.5pt;line-height:1.25;display:block}
+  .sh-inst{color:#5C6670;font-size:8.5pt;line-height:1.3;display:block;margin-top:.4mm}
+  .sh-when{color:#7A8590;font-size:8pt;font-variant-numeric:tabular-nums;display:block}
+  .sh-foot{
+    display:flex;justify-content:space-between;gap:6mm;margin:3mm 0 0;
+    font-size:7.5pt;color:#7A8590;
+  }
+  footer{
+    margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--ink-2);font-size:12.5px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
+  }
+  .legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .swatch{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+  @media (max-width:720px){
+    .hourgroup{grid-template-columns:1fr;gap:6px}
+    .hourlabel{position:static;padding-top:0}
+    .card{grid-template-columns:1fr}
+    .right{flex-direction:row;align-items:center;justify-content:space-between;width:100%;text-align:left}
+    .nowbtn{margin-left:0;width:100%;justify-content:center}
+    input[type="search"]{flex:1;width:auto;min-width:140px}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <h1>SEAST Course Offerings</h1>
+      <div class="sub">Fall 2026 &middot; 31 Aug &ndash; 11 Dec &middot; <span id="secCount"></span> sections, <span id="mtgCount"></span> weekly meetings</div>
+    </div>
+    <div class="clock">
+      <div class="t" id="clockTime">--:--</div>
+      <div class="z" id="clockDay">Gulf Standard Time</div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="daybar" id="daybar" role="group" aria-label="Day of week"></div>
+    <div class="row2">
+      <div class="seg" id="viewSeg" role="group" aria-label="Layout">
+        <button data-view="grid" aria-pressed="true">Grid</button>
+        <button data-view="list" aria-pressed="false">List</button>
+      </div>
+      <div class="seg" role="group" aria-label="Session type">
+        <button data-type="all" aria-pressed="true">All</button>
+        <button data-type="lec" aria-pressed="false">Lectures</button>
+        <button data-type="lab" aria-pressed="false">Labs</button>
+      </div>
+      <select id="instructor" aria-label="Instructor"></select>
+      <div class="seg" id="scopeSeg" role="group" aria-label="Range">
+        <button data-scope="day" aria-pressed="true">Selected day</button>
+        <button data-scope="week" aria-pressed="false">Whole week</button>
+      </div>
+      <select id="room" aria-label="Room"></select>
+      <button class="linkbtn" id="printBtn" disabled>Print room sheet</button>
+      <input type="search" id="q" placeholder="Course code or name" aria-label="Search courses">
+      <button class="linkbtn" id="reset">Clear</button>
+      <button class="nowbtn" id="nowBtn" aria-pressed="false"><span class="dot"></span>Running now</button>
+    </div>
+    <div class="row3">
+      <label class="locwrap" for="locate">
+        <span class="loclabel">Locate me</span>
+        <input type="search" id="locate" placeholder="Type an instructor's name — e.g. Khurana" autocomplete="off">
+      </label>
+      <span class="lochelp">Tells you whether they are teaching right now, and until when.</span>
+    </div>
+  </div>
+  <div id="locOut"></div>
+
+  <div class="status">
+    <h2 id="viewTitle">Monday</h2>
+    <div class="count" id="viewCount"></div>
+  </div>
+
+  <p class="roomhint" id="roomhint"></p>
+  <main id="out"></main>
+  <div class="sheet" id="sheet"></div>
+
+  <footer>
+    <div class="legend">
+      <span><span class="swatch" style="background:var(--accent)"></span>Lecture / seminar</span>
+      <span><span class="swatch" style="background:var(--lab)"></span>Lab session</span>
+      <span>TBA = instructor pending (IP)</span>
+    </div>
+    <div>Times shown in Gulf Standard Time (UTC+4). R = Thursday, S = Saturday.</div>
+  </footer>
+</div>
+
+<script>
+/* ---------- data: [code, name, credits, maxEnr, totEnr, meetings[[instructor, room, days, start, end]]] ---------- */
+const RAW = [
+["BAI101Lec1","AI And Modern Life",3,50,51,[["AlFutaisi, Najla","MGT-201","T","12:00","14:59"]]],
+["BAI201Lec1","Introduction To Artificial Intelligence",3,24,24,[["AlFutaisi, Najla","HUB-101","M","15:00","16:59"],["AlFutaisi, Najla","HUB-117 Software Lab","M","17:00","18:59"]]],
+["BAI201Lec2","Introduction To Artificial Intelligence",3,24,20,[["AlFutaisi, Najla","HUB-101","M","15:00","16:59"],["IP, IP","HUB-117 Software Lab","T","19:00","20:59"]]],
+["BCS101Lec1","Elements Of Computing",3,24,18,[["IP, IP","HUB-118 Robotic Lab","M","17:00","18:59"],["Mohamed, Tamer","MGT-204","T","11:00","12:59"]]],
+["BCS101Lec2","Elements Of Computing",3,24,19,[["Mohamed, Tamer","MGT-204","T","11:00","12:59"],["Mohamed, Tamer","HUB-118 Robotic Lab","W","19:00","20:59"]]],
+["BCS101Lec3","Elements Of Computing",3,24,24,[["Abuserrieh, Lobna","MGT-204","M","15:00","16:59"],["Abuserrieh, Lobna","HUB-117 Software Lab","T","15:00","16:59"]]],
+["BCS101Lec4","Elements Of Computing",3,24,24,[["Abuserrieh, Lobna","MGT-204","M","15:00","16:59"],["IP, IP","HUB-117 Software Lab","T","17:00","18:59"]]],
+["BCS101Lec5","Elements Of Computing",3,24,25,[["Mohamed, Tamer","HUB-117 Software Lab","T","09:00","10:59"],["Mohamed, Tamer","MGT-204","R","10:00","11:59"]]],
+["BCS101Lec6","Elements Of Computing",3,24,5,[["IP, IP","HUB-118 Robotic Lab","W","17:00","18:59"],["Mohamed, Tamer","MGT-204","R","10:00","11:59"]]],
+["BCS201Lec1","Logic For Computing Science",3,35,25,[["El Messiry, Haytham","MGT-208","T","09:00","11:59"]]],
+["BCS201Lec2","Logic For Computing Science",3,35,23,[["IP, IP","HUB-113","W","18:00","20:58"]]],
+["BCS202Lec1","Introduction To Computing Science II",3,22,22,[["Hussein, Ahmed","MGT-204","M","09:00","10:59"],["Hussein, Ahmed","HUB-117 Software Lab","R","10:00","11:59"]]],
+["BCS202Lec2","Introduction To Computing Science II",3,22,15,[["Hussein, Ahmed","MGT-204","M","09:00","10:59"],["IP, IP","HUB-118 Robotic Lab","R","10:00","11:59"]]],
+["BCS202Lec3","Introduction To Computing Science II",3,24,25,[["eltawab, Samy","HUB-117 Software Lab","M","15:00","16:59"],["eltawab, Samy","MGT-204","R","15:00","16:59"]]],
+["BCS202Lec4","Introduction To Computing Science II",3,22,22,[["IP, IP","HUB-117 Software Lab","M","19:00","20:59"],["eltawab, Samy","MGT-204","R","15:00","16:59"]]],
+["BCS301Lec1","Operating Systems",4,22,22,[["IP, IP","HUB-118 Robotic Lab","W","13:00","14:59"],["El Messiry, Haytham","MGT-209","R","09:00","11:59"]]],
+["BCS301Lec2","Operating Systems",4,22,20,[["IP, IP","HUB-117 Software Lab","M","13:00","14:59"],["El Messiry, Haytham","MGT-209","R","09:00","11:59"]]],
+["BCS301Lec3","Operating Systems",4,22,18,[["Injadat, MohammadNoor","MGT-208","W","09:00","11:59"],["IP, IP","HUB-118 Robotic Lab","R","15:00","16:59"]]],
+["BCS301Lec4","Operating Systems",4,22,14,[["Injadat, MohammadNoor","MGT-208","W","09:00","11:59"],["IP, IP","HUB-117 Software Lab","R","17:00","18:59"]]],
+["BCS303Lec1","Security Principles And Practices",4,24,24,[["IP, IP","HUB-118 Robotic Lab","T","19:00","20:59"],["Khurana, Mehak","HUB-114","W","15:00","17:59"]]],
+["BCS303Lec2","Security Principles And Practices",4,20,21,[["IP, IP","HUB-118 Robotic Lab","M","15:00","16:59"],["Khurana, Mehak","HUB-114","W","15:00","17:59"]]],
+["BCS303Lec3","Security Principles And Practices",4,20,14,[["Khurana, Mehak","HUB-107","T","09:00","11:59"],["IP, IP","HUB-117 Software Lab","R","19:00","20:59"]]],
+["BCS303Lec4","Security Principles And Practices",4,24,24,[["Khurana, Mehak","HUB-107","T","09:00","11:59"],["IP, IP","HUB-117 Software Lab","W","13:00","14:59"]]],
+["BCS304Lec1","Data Mining",3,45,39,[["Abuserrieh, Lobna","MGT-208","M","18:00","20:59"]]],
+["BCS305Lec1","Software Architecture",3,60,60,[["Abuserrieh, Lobna","HUB-101","F","09:00","11:59"]]],
+["BCS306Lec1","Database Management Systems",3,24,24,[["Hussein, Ahmed","MGT-209","T","11:00","12:59"],["Hussein, Ahmed","HUB-117 Software Lab","R","15:00","16:59"]]],
+["BCS306Lec2","Database Management Systems",3,24,23,[["Hussein, Ahmed","MGT-209","T","11:00","12:59"],["IP, IP","HUB-118 Robotic Lab","R","17:00","18:59"]]],
+["BCS311Lec1","Scientific Computing",3,24,24,[["Kolankeh, Arash","HUB-114","T","19:00","20:59"],["Kolankeh, Arash","HUB-117 Software Lab","W","15:00","16:59"]]],
+["BCS311Lec2","Scientific Computing",3,22,22,[["IP, IP","HUB-118 Robotic Lab","M","09:00","10:59"],["Kolankeh, Arash","HUB-114","T","19:00","20:59"]]],
+["BCS311Lec3","Scientific Computing",3,23,23,[["Kolankeh, Arash","HUB-114","M","10:00","11:59"],["Kolankeh, Arash","HUB-118 Robotic Lab","T","17:00","18:59"]]],
+["BCS311Lec4","Scientific Computing",3,23,24,[["Kolankeh, Arash","HUB-114","M","10:00","11:59"],["IP, IP","HUB-118 Robotic Lab","T","09:00","10:59"]]],
+["BCS401Lec1","Ethics For Computing Professionals",3,60,52,[["Injadat, MohammadNoor","HUB-101","M","09:00","11:59"]]],
+["BCS401Lec2","Ethics For Computing Professionals",3,50,50,[["Injadat, MohammadNoor","MGT-101","T","18:00","20:59"]]],
+["BCS402Lec1","Computability And Complexity",3,32,31,[["Kolankeh, Arash","MGT-206","W","18:00","20:59"]]],
+["BCS410Prj1","Computer Science Project",6,60,50,[["IP, IP","","N/A","",""]]],
+["BSD311Lec1","Human Computer Interaction",3,40,36,[["Injadat, MohammadNoor","MGT-203","R","18:00","20:59"]]],
+["BSD410Prj1","Software Design Project",6,10,2,[["IP, IP","","N/A","",""]]],
+["CYS401Lec1","Engineering Secure Software",3,24,21,[["Seyam, Ahmed","HUB-118 Robotic Lab","W","15:00","16:59"],["Abuserrieh, Lobna","MGT-205","R","15:00","16:59"]]],
+["CYS412Lec1","Mobile And Wireless Security",4,32,18,[["Khurana, Mehak","MGT-210","M","09:00","11:59"],["IP, IP","HUB-118 Robotic Lab","T","15:00","16:59"]]],
+["ENG102Lec1","Digital Logic",3,24,14,[["Turker, Turker","HUB-117 Software Lab","T","13:00","14:59"],["Turker, Turker","MGT-101","W","09:00","10:59"]]],
+["ENG122Lab1","Engineering Graphics And Design",1,24,2,[["Gharib, Mohamed","HUB-119","M","09:00","10:59"]]],
+["ENG213Lec1","Electric Circuit I",3,18,11,[["Turker, Turker","HUB-116 Electronic Lab","M","15:00","16:59"],["Turker, Turker","HUB-116 Electronic Lab","R","09:00","10:59"]]],
+["ENG315Lec1","Control Systems",3,24,10,[["Gharib, Mohamed","HUB-113","W","09:00","11:59"]]],
+["ENG316Lec1","Internet Of Things And Data Science",3,24,2,[["IP, IP","MGT-210","M","16:00","17:59"],["IP, IP","HUB-117 Software Lab","T","11:00","12:59"]]],
+["ENG317Lec1","Digital Signal Processing",3,24,14,[["El Khatib, Ziad","HUB-113","R","09:00","11:59"]]],
+["ENG320IntCNET","Internship",2,10,1,[["IP, IP","","N/A","",""]]],
+["ENG320IntENG","Internship",2,10,0,[["IP, IP","","N/A","",""]]],
+["ENG410Lec1","Professional And Ethical Practice",3,32,27,[["AlFutaisi, Najla","MGT-206","R","18:00","20:59"]]],
+["ENG411Prj1","Graduation Project-1",2,20,17,[["IP, IP","","N/A","",""]]],
+["ENG416Lec1","Professional And Engineering Ethics",3,32,27,[["AlFutaisi, Najla","MGT-206","R","18:00","20:59"]]],
+["ENG420Int1","Internship",3,10,1,[["IP, IP","","N/A","",""]]],
+["IDM401Lec1","Smart Manufacturing Systems",3,32,18,[["IP, IP","MGT-105","R","15:00","17:59"]]],
+["MAI501Lec1","Programming For AI Applications",3,24,2,[["IP, IP","MGT-203","S","14:00","16:59"]]],
+["MAI502Lec1","Introduction To Artificial Intelligence",3,24,2,[["IP, IP","MGT-103","F","14:00","16:59"]]],
+["MAI503Lec1","Applied Discrete Mathematics",3,24,2,[["IP, IP","MGT-203","S","10:00","12:59"]]],
+["MAI600Lec1","Mathematics And Statistics For AI",3,30,16,[["Kamalov, Firuz","MGT-206","F","18:00","20:59"]]],
+["MAI601Lec1","Data Mining",3,30,11,[["Elnashar, Ayman","MGT-206","F","15:00","17:59"]]],
+["MAI602Lec1","Machine Learning",3,30,9,[["Garg, Sahil","MGT-206","S","10:00","12:59"]]],
+["MAI603Lec1","Advanced Artificial Intelligence",3,30,2,[["Elgazzar, Khalid","MGT-206","S","14:00","16:59"]]],
+["MAI652Lec1","Computer Vision",3,30,8,[["El Messiry, Haytham","MGT-205","S","14:00","16:59"]]],
+["MAI656Lec1","Nature Language Processing",3,30,5,[["Kolankeh, Arash","MGT-205","S","10:00","12:59"]]],
+["MEC305Lec1","Mechanical Vibrations",3,24,16,[["Gharib, Mohamed","MGT-203","T","13:00","14:59"],["Gharib, Mohamed","HUB-104 Mechatronics Lab","W","13:00","14:59"]]],
+["MEC415Lec1","Computer Integrated Manufacturing (CIM)",3,24,24,[["El Khatib, Ziad","HUB-113","M","19:00","20:59"],["El Khatib, Ziad","HUB-104 Mechatronics Lab","W","19:00","20:59"]]],
+["MEC421Lec1","Robotics",3,30,21,[["El Khatib, Ziad","HUB-104 Mechatronics Lab","T","17:00","18:59"],["El Khatib, Ziad","HUB-104 Mechatronics Lab","W","17:00","18:59"]]],
+["MTH112Lec1","Calculus 1",3,45,45,[["IP, IP","HUB-114","M","09:00","09:59"],["El Sayed, Ahmed Abdelaziz","HUB-114","MW","12:00","13:29"]]],
+["MTH112Lec2","Calculus 1",3,45,44,[["El Sayed, Ahmed Abdelaziz","HUB-114","MW","13:30","14:59"],["IP, IP","MGT-204","M","17:00","17:59"]]],
+["MTH112Lec3","Calculus 1",3,35,24,[["Elobaid, Rafida","MGT-103","T","16:30","17:59"],["Elobaid, Rafida","MGT-204","R","09:00","09:59"],["Elobaid, Rafida","HUB-114","R","16:30","17:59"]]],
+["MTH112LecARC 1","Calculus 1",3,32,25,[["Alotaibi, Emran","MGT-102","M","13:30","14:59"],["Alotaibi, Emran","MGT-106","W","12:00","13:29"],["IP, IP","MGT-101","R","11:00","11:59"]]],
+["MTH114Lec1","Linear Algebra",3,37,37,[["El Sayed, Ahmed Abdelaziz","MGT-208","TW","15:00","16:29"]]],
+["MTH114Lec2","Linear Algebra",3,35,24,[["El Sayed, Ahmed Abdelaziz","MGT-207","MR","09:00","10:29"]]],
+["MTH114Lec3","Linear Algebra",3,35,35,[["Rani, Rashmi","MGT-208","TW","16:30","17:59"]]],
+["MTH130Lec1","Probability And Statistics",3,35,35,[["Elobaid, Rafida","MGT-107","MW","12:00","13:29"]]],
+["MTH130Lec2","Probability And Statistics",3,35,35,[["Elobaid, Rafida","MGT-208","MW","13:30","14:59"]]],
+["MTH130Lec3","Probability And Statistics",3,35,22,[["Elobaid, Rafida","MGT-207","MR","10:30","11:59"]]],
+["MTH203Lec1","Discrete Mathematics For Computing Science",3,45,45,[["Mohamed, Tamer","MGT-208","MW","12:00","13:29"]]],
+["MTH203Lec2","Discrete Mathematics For Computing Science",3,40,40,[["Mohamed, Tamer","MGT-107","MW","13:30","14:59"]]],
+["MTH212Lec1","Calculus 3",3,32,15,[["Rani, Rashmi","MGT-210","M","13:30","14:59"],["Rani, Rashmi","MGT-102","T","11:00","12:29"]]],
+["NET105Lec1","Microprocessors And Microcontrollers",3,24,22,[["IP, IP","HUB-118 Robotic Lab","M","19:00","20:59"],["Turker, Turker","MGT-204","W","11:00","12:59"]]],
+["NET105Lec2","Microprocessors And Microcontrollers",3,24,8,[["IP, IP","HUB-116 Electronic Lab","M","17:00","18:59"],["Turker, Turker","MGT-204","W","11:00","12:59"]]],
+["NET120Lec1","LAN Switching And Routing",3,24,13,[["Faheem, Yasir","HUB-115 Networking Lab","T","17:00","18:59"],["Faheem, Yasir","MGT-205","W","16:00","17:59"]]],
+["NET121LecCN1","Network Operating Systems",3,24,8,[["Faheem, Yasir","MGT-203","T","11:00","12:59"],["Faheem, Yasir","HUB-115 Networking Lab","W","11:00","12:59"]]],
+["NET220LecC1","Network Security And Administration",3,24,24,[["IP, IP","HUB-118 Robotic Lab","T","19:00","20:59"],["Khurana, Mehak","HUB-114","W","15:00","16:59"]]],
+["NET220LecC2","Network Security And Administration",3,24,24,[["Khurana, Mehak","HUB-107","T","09:00","10:59"],["IP, IP","HUB-117 Software Lab","W","13:00","14:59"]]],
+["NET221Lec1","Communication Technology",3,24,7,[["eltawab, Samy","MGT-106","M","18:00","20:59"]]],
+["NET403Lec1","Mobile Security",3,32,18,[["Khurana, Mehak","MGT-210","M","09:00","10:59"],["IP, IP","HUB-118 Robotic Lab","T","15:00","16:59"]]],
+["NET410Lec1","Enterprise Network Design",3,24,20,[["Faheem, Yasir","HUB-115 Networking Lab","T","13:00","14:59"],["Faheem, Yasir","HUB-101","R","19:00","20:59"]]],
+["NET440Prj1","CNET Project 1",2,20,16,[["IP, IP","","N/A","",""]]],
+["NET441Prj1","CNET Project 2",2,10,0,[["IP, IP","","N/A","",""]]],
+["PHY012Lec1","Pre-Physics",0,18,3,[["Saidi, Ziyad","HUB-116 Electronic Lab","W","15:00","16:59"],["Saidi, Ziyad","HUB-116 Electronic Lab","W","17:00","18:59"]]],
+["RAI401Lec1","Robotics",3,30,21,[["El Khatib, Ziad","HUB-104 Mechatronics Lab","T","17:00","18:59"],["El Khatib, Ziad","HUB-104 Mechatronics Lab","W","17:00","18:59"]]],
+["SCI210Lec1","Modern Physics",3,16,14,[["Turker, Turker","MGT-203","T","09:00","10:59"],["Aboueldahab, Hussein","HUB-116 Electronic Lab","R","17:00","18:59"]]],
+["SCI210Lec2","Modern Physics",3,16,15,[["Turker, Turker","MGT-203","T","09:00","10:59"],["Aboueldahab, Hussein","HUB-116 Electronic Lab","W","19:00","20:59"]]],
+["SCI220Lec1","Engineering Mechanics",3,30,21,[["Gharib, Mohamed","MGT-105","T","15:00","17:59"]]],
+["SWS110Lec1","Programming 1",3,24,25,[["Abuserrieh, Lobna","HUB-117 Software Lab","T","09:00","10:59"],["Abuserrieh, Lobna","MGT-204","R","10:00","11:59"]]],
+["SWS111Lec1","Programming 2",3,22,22,[["Hussein, Ahmed","MGT-204","M","09:00","10:59"],["Hussein, Ahmed","HUB-117 Software Lab","R","10:00","11:59"]]],
+["SWS111Lec2","Programming 2",3,24,25,[["eltawab, Samy","HUB-117 Software Lab","M","15:00","16:59"],["eltawab, Samy","MGT-204","R","15:00","16:59"]]],
+["SWS315Lec1","Mobile Application Development",3,24,3,[["Hussein, Ahmed","MGT-204","M","13:00","14:59"],["IP, IP","HUB-115 Networking Lab","R","15:00","16:59"]]]
+];
+
+const DAYS = [
+  {k:"M",label:"Monday",short:"Mon"},
+  {k:"T",label:"Tuesday",short:"Tue"},
+  {k:"W",label:"Wednesday",short:"Wed"},
+  {k:"R",label:"Thursday",short:"Thu"},
+  {k:"F",label:"Friday",short:"Fri"},
+  {k:"S",label:"Saturday",short:"Sat"}
+];
+const JS_DAY_TO_KEY = {1:"M",2:"T",3:"W",4:"R",5:"F",6:"S",0:null}; // Sunday: no classes
+
+/* ---------- flatten into meetings ---------- */
+const toMin = s => { const [h,m] = s.split(":").map(Number); return h*60+m; };
+const fmt = mins => {
+  const h = Math.floor(mins/60), m = mins%60;
+  const ap = h >= 12 ? "PM" : "AM";
+  const hh = h % 12 === 0 ? 12 : h % 12;
+  return hh + ":" + String(m).padStart(2,"0") + " " + ap;
+};
+const MEET = [];
+RAW.forEach(([code,name,cr,max,tot,rows]) => {
+  rows.forEach(([who,room,days,st,en]) => {
+    const isLab = /lab/i.test(room) || /Lab\d*$/i.test(code);
+    const base = {code,name,cr,max,tot,who,room,
+      type: days === "N/A" ? "other" : (isLab ? "lab" : "lec"),
+      tba: who === "IP, IP"};
+    if (days === "N/A"){
+      MEET.push({...base, day:"X", s:-1, e:-1, timeText:"Unscheduled"});
+    } else {
+      days.split("").forEach(d => {
+        MEET.push({...base, day:d, s:toMin(st), e:toMin(en),
+          timeText: fmt(toMin(st)) + " – " + fmt(toMin(en))});
+      });
+    }
+  });
+});
+
+/* ---------- state ---------- */
+const state = {day:"M", type:"all", who:"", room:"", q:"", now:false, scope:"day", view:"grid"};
+const T0 = 9*60, T1 = 21*60, SPAN = T1 - T0;
+
+/* ---------- clock (Asia/Dubai) ---------- */
+function dubaiNow(){
+  const parts = new Intl.DateTimeFormat("en-US",{
+    timeZone:"Asia/Dubai", weekday:"short", hour:"2-digit", minute:"2-digit", hour12:false
+  }).formatToParts(new Date());
+  const g = t => parts.find(p => p.type === t).value;
+  const wdMap = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+  const wd = wdMap[g("weekday")];
+  let h = parseInt(g("hour"),10); if (h === 24) h = 0;
+  return {dayKey: JS_DAY_TO_KEY[wd], wd, mins: h*60 + parseInt(g("minute"),10)};
+}
+function tickClock(){
+  const n = dubaiNow();
+  document.getElementById("clockTime").textContent = fmt(n.mins);
+  const nameOf = {0:"Sunday",1:"Monday",2:"Tuesday",3:"Wednesday",4:"Thursday",5:"Friday",6:"Saturday"};
+  document.getElementById("clockDay").textContent = nameOf[n.wd] + " · GST";
+  if (state.now) render();
+  if (document.getElementById("locOut").innerHTML) runLocate();
+}
+
+/* ---------- build controls ---------- */
+const daybar = document.getElementById("daybar");
+function dayCount(k){
+  return MEET.filter(m => m.day === k).length;
+}
+DAYS.concat([{k:"X",label:"Unscheduled",short:"Unscheduled"}]).forEach(d => {
+  const b = document.createElement("button");
+  b.className = "day"; b.dataset.day = d.k;
+  b.setAttribute("aria-pressed", d.k === state.day ? "true" : "false");
+  b.innerHTML = d.short + ' <span class="n">' + dayCount(d.k) + '</span>';
+  b.addEventListener("click", () => {
+    state.day = d.k; state.now = false; state.scope = "day"; syncUI(); render();
+  });
+  daybar.appendChild(b);
+});
+
+const instSel = document.getElementById("instructor");
+const roomSel = document.getElementById("room");
+function fillSelect(sel, placeholder, values){
+  sel.innerHTML = '<option value="">' + placeholder + '</option>' +
+    values.map(v => '<option value="' + v.replace(/"/g,'&quot;') + '">' + v + '</option>').join("");
+}
+const instructors = [...new Set(MEET.map(m => m.who))].filter(w => w !== "IP, IP").sort((a,b)=>a.localeCompare(b));
+fillSelect(instSel, "All instructors (" + instructors.length + ")", instructors.concat(["IP, IP"]));
+instSel.querySelector('option[value="IP, IP"]').textContent = "TBA (instructor pending)";
+const rooms = [...new Set(MEET.map(m => m.room))].filter(Boolean).sort((a,b)=>a.localeCompare(b));
+fillSelect(roomSel, "All rooms (" + rooms.length + ")", rooms);
+
+instSel.addEventListener("change", e => {
+  state.who = e.target.value;
+  document.getElementById("scopeSeg").classList.toggle("hot", !!state.who);
+  render();
+});
+roomSel.addEventListener("change", e => {
+  state.room = e.target.value;
+  document.getElementById("printBtn").disabled = !state.room;
+  buildSheet();
+  render();
+});
+document.getElementById("printBtn").addEventListener("click", () => {
+  if (!state.room) return;
+  buildSheet();
+  window.print();
+});
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+document.querySelectorAll(".seg button[data-type]").forEach(b => {
+  b.addEventListener("click", () => { state.type = b.dataset.type; syncUI(); render(); });
+});
+document.querySelectorAll(".seg button[data-view]").forEach(b => {
+  b.addEventListener("click", () => { state.view = b.dataset.view; syncUI(); render(); });
+});
+document.querySelectorAll(".seg button[data-scope]").forEach(b => {
+  b.addEventListener("click", () => {
+    state.scope = b.dataset.scope;
+    if (state.scope === "week") state.now = false;
+    syncUI(); render();
+  });
+});
+document.getElementById("nowBtn").addEventListener("click", () => {
+  state.now = !state.now;
+  if (state.now){ state.scope = "day"; const n = dubaiNow(); if (n.dayKey) state.day = n.dayKey; }
+  syncUI(); render();
+});
+document.getElementById("reset").addEventListener("click", () => {
+  state.type = "all"; state.who = ""; state.room = ""; state.q = ""; state.now = false; state.scope = "day";
+  instSel.value = ""; roomSel.value = ""; document.getElementById("q").value = "";
+  document.getElementById("scopeSeg").classList.remove("hot");
+  document.getElementById("printBtn").disabled = true;
+  buildSheet();
+  syncUI(); render();
+});
+
+function syncUI(){
+  const week = state.scope === "week" && !state.now;
+  document.querySelectorAll(".day").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.day === state.day && !state.now && !week ? "true" : "false"));
+  daybar.classList.toggle("inactive", week);
+  document.querySelectorAll(".seg button[data-type]").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.type === state.type ? "true" : "false"));
+  document.querySelectorAll(".seg button[data-view]").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.view === state.view ? "true" : "false"));
+  document.querySelectorAll(".seg button[data-scope]").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.scope === state.scope && !state.now ? "true" : "false"));
+  document.getElementById("nowBtn").setAttribute("aria-pressed", state.now ? "true" : "false");
+}
+
+/* ---------- render ---------- */
+const esc = s => String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const setTitle = t => {
+  document.getElementById("viewTitle").textContent = t + (state.room ? " · " + state.room : "");
+};
+
+function passesFilters(m){
+  if (state.type !== "all" && m.type !== state.type) return false;
+  if (state.who && m.who !== state.who) return false;
+  if (state.room && m.room !== state.room) return false;
+  if (state.q && !(m.code + " " + m.name + " " + m.who + " " + m.room).toLowerCase().includes(state.q)) return false;
+  return true;
+}
+
+function hourGroups(list, n){
+  const groups = [];
+  list.forEach(m => {
+    const key = m.s < 0 ? -1 : Math.floor(m.s / 60);
+    let g = groups[groups.length - 1];
+    if (!g || g.key !== key){ g = {key, items:[]}; groups.push(g); }
+    g.items.push(m);
+  });
+  return groups.map(g => {
+    const label = g.key < 0 ? "No time" : fmt(g.key * 60).replace(":00","");
+    return '<section class="hourgroup"><div class="hourlabel">' + label + '</div><div class="stack">' +
+      g.items.map(m => card(m, n)).join("") + '</div></section>';
+  }).join("");
+}
+
+function render(){
+  const out = document.getElementById("out");
+  const n = dubaiNow();
+  const week = state.scope === "week" && !state.now;
+
+  if (state.view === "grid") return renderGrid(out, n, week);
+  if (week) return renderWeek(out, n);
+
+  const dayKey = state.now ? n.dayKey : state.day;
+  let list = MEET.filter(m => m.day === dayKey && passesFilters(m));
+  if (state.now) list = list.filter(m => m.s <= n.mins && n.mins <= m.e);
+  list.sort((a,b) => a.s - b.s || a.code.localeCompare(b.code));
+
+  const dayName = dayKey ? (DAYS.find(d => d.k === dayKey) || {label:"Unscheduled"}).label : "Sunday";
+  setTitle(state.now ? "Running right now · " + dayName + " " + fmt(n.mins)
+                     : dayName + (state.who ? " · " + labelFor(state.who) : ""));
+  document.getElementById("viewCount").textContent =
+    list.length + (list.length === 1 ? " session" : " sessions") +
+    (state.type === "lab" ? " · labs only" : state.type === "lec" ? " · lectures only" : "");
+
+  if (!list.length){
+    let msg = "Nothing matches these filters.", hint = "Try clearing the instructor, room or search box.";
+    if (state.now){
+      msg = "No classes in session right now.";
+      const later = MEET.filter(m => m.day === n.dayKey && m.s > n.mins).sort((a,b) => a.s - b.s);
+      hint = !n.dayKey ? "Sunday has no scheduled classes this term."
+           : later.length ? "Next up: " + esc(later[0].code) + " at " + fmt(later[0].s) + " in " + esc(later[0].room) + "."
+           : "Nothing further scheduled today.";
+    } else if (dayKey === "X"){
+      msg = "No unscheduled sections match.";
+    } else if (state.who){
+      msg = labelFor(state.who) + " has nothing on " + dayName + ".";
+      hint = "Switch to Whole week to see their full teaching load.";
+    }
+    out.innerHTML = '<div class="empty"><strong>' + msg + '</strong>' + hint + '</div>';
+    return;
+  }
+
+  out.innerHTML = hourGroups(list, n);
+}
+
+function renderWeek(out, n){
+  const list = MEET.filter(passesFilters);
+  const order = DAYS.map(d => d.k).concat(["X"]);
+
+  setTitle((state.who ? labelFor(state.who) : "Whole week") + " · Mon to Sat");
+
+  const mins = list.filter(m => m.s >= 0).reduce((t,m) => t + (m.e - m.s + 1), 0);
+  const daysUsed = new Set(list.filter(m => m.s >= 0).map(m => m.day)).size;
+  const courses = new Set(list.map(m => m.code)).size;
+  document.getElementById("viewCount").textContent =
+    list.length + (list.length === 1 ? " session" : " sessions") +
+    (state.type === "lab" ? " · labs only" : state.type === "lec" ? " · lectures only" : "");
+
+  if (!list.length){
+    out.innerHTML = '<div class="empty"><strong>Nothing matches these filters.</strong>' +
+      'Try clearing the instructor, room or search box.</div>';
+    return;
+  }
+
+  const summary = '<div class="weeksum">' +
+    '<div><span class="k">' + courses + '</span><span class="l">section' + (courses === 1 ? "" : "s") + '</span></div>' +
+    '<div><span class="k">' + list.length + '</span><span class="l">weekly meeting' + (list.length === 1 ? "" : "s") + '</span></div>' +
+    '<div><span class="k">' + daysUsed + '</span><span class="l">day' + (daysUsed === 1 ? "" : "s") + ' on campus</span></div>' +
+    '<div><span class="k">' + (Math.round(mins / 60 * 10) / 10) + '</span><span class="l">contact hours / week</span></div>' +
+  '</div>';
+
+  const blocks = order.map(k => {
+    const items = list.filter(m => m.day === k).sort((a,b) => a.s - b.s || a.code.localeCompare(b.code));
+    if (!items.length) return "";
+    const d = DAYS.find(x => x.k === k);
+    const dayLabel = d ? d.label : "Unscheduled";
+    const hrs = items.filter(m => m.s >= 0).reduce((t,m) => t + (m.e - m.s + 1), 0);
+    const meta = d ? items.length + " · " + (Math.round(hrs / 60 * 10) / 10) + " h" : items.length + " section" + (items.length === 1 ? "" : "s");
+    return '<section class="dayblock"><div class="dayhead"><h3>' + dayLabel + '</h3>' +
+      '<span class="dn">' + meta + '</span></div>' + hourGroups(items, n) + '</section>';
+  }).join("");
+
+  out.innerHTML = summary + blocks;
+}
+
+function labelFor(who){ return who === "IP, IP" ? "TBA (instructor pending)" : who; }
+
+/* ---------- timeline grid: days down the side, hours across ---------- */
+const shortRoom = r => (r || "TBA").split(" ")[0];
+function axisRow(){
+  let ticks = "";
+  for (let m = T0; m < T1; m += 60){
+    const l = (m - T0) / SPAN * 100, h = m / 60;
+    const ap = h >= 12 ? "p" : "a", hh = h % 12 === 0 ? 12 : h % 12;
+    ticks += '<div class="tick' + (h % 3 === 0 ? " major" : "") + '" style="left:' + l + '%"><b>' + hh + ap + '</b></div>';
+  }
+  return '<div class="axisrow"><div class="daycol"><span>Day</span></div><div class="lanes">' + ticks + '</div></div>';
+}
+function hourTicks(){
+  let h = "";
+  for (let m = T0; m <= T1; m += 60){
+    const l = (m - T0) / SPAN * 100;
+    h += '<div class="tick' + ((m / 60) % 3 === 0 ? " major" : "") + '" style="left:' + l + '%"></div>';
+  }
+  return h;
+}
+
+function renderGrid(out, n, week){
+  const dayKey = state.now ? (n.dayKey || state.day) : state.day;
+
+  if (!week && dayKey === "X"){
+    const items = MEET.filter(m => m.day === "X" && passesFilters(m));
+    document.getElementById("viewTitle").textContent = "Unscheduled";
+    document.getElementById("viewCount").textContent = items.length + " sections · no meeting time";
+    out.innerHTML = items.length
+      ? '<div class="stack">' + items.map(m => card(m, n)).join("") + '</div>'
+      : '<div class="empty"><strong>No unscheduled sections match.</strong>Projects and internships appear here.</div>';
+    return;
+  }
+
+  const days = week ? DAYS : DAYS.filter(d => d.k === dayKey);
+  const all = MEET.filter(m => m.s >= 0 && passesFilters(m));
+  const shown = all.filter(m => days.some(d => d.k === m.day));
+  const running = shown.filter(m => m.day === n.dayKey && m.s <= n.mins && n.mins <= m.e);
+
+  const dayName = dayKey ? (DAYS.find(d => d.k === dayKey) || {label:"Sunday"}).label : "Sunday";
+  setTitle(state.now ? "Running right now · " + dayName + " " + fmt(n.mins)
+    : week ? (state.who ? labelFor(state.who) : "Whole week") + " · Mon to Sat"
+    : dayName + (state.who ? " · " + labelFor(state.who) : ""));
+  document.getElementById("viewCount").textContent =
+    state.now
+      ? running.length + " in session · " + shown.length + " scheduled today"
+      : shown.length + (shown.length === 1 ? " session" : " sessions") +
+        (state.type === "lab" ? " · labs only" : state.type === "lec" ? " · lectures only" : "");
+
+  const rows = days.map(d => {
+    const items = shown.filter(m => m.day === d.k).sort((a,b) => a.s - b.s || a.e - b.e);
+    const laneEnd = [];
+    items.forEach(e => {
+      let k = laneEnd.findIndex(x => e.s >= x);
+      if (k === -1) k = laneEnd.length;
+      laneEnd[k] = e.e; e._lane = k;
+    });
+    const lanes = Math.max(1, laneEnd.length);
+    const BH = 42, GAP = 5;
+    const height = lanes * BH + (lanes - 1) * GAP + 14;
+
+    const blocks = items.map(e => {
+      const left = (e.s - T0) / SPAN * 100, w = (e.e - e.s + 1) / SPAN * 100;
+      const live = e.day === n.dayKey && e.s <= n.mins && n.mins <= e.e;
+      const over = e.tot > e.max;
+      const pc = e.type === "lab" ? "var(--lab)" : "var(--accent)";
+      const tip = e.code + " · " + e.name + " · " + (e.type === "lab" ? "Lab" : "Lecture") + " · " +
+        e.room + " · " + e.timeText + " · " + labelFor(e.who) + " · " + e.tot + "/" + e.max + " enrolled" +
+        (over ? " (over capacity)" : "");
+      return '<div class="blk' + (live ? " livenow" : "") + (over ? " overfull" : "") + '" style="--pc:' + pc +
+        ';left:' + left + '%;width:' + w + '%;top:' + (7 + e._lane * (BH + GAP)) + 'px;height:' + BH + 'px" ' +
+        'title="' + esc(tip).replace(/"/g,"&quot;") + '">' +
+        '<div class="c">' + esc(e.code) + '</div>' +
+        '<div class="m">' + esc(shortRoom(e.room)) + ' · ' + fmt(e.s) + '</div></div>';
+    }).join("");
+
+    const isToday = d.k === n.dayKey;
+    const nowline = isToday && n.mins >= T0 && n.mins <= T1
+      ? '<div class="nowline" style="left:' + ((n.mins - T0) / SPAN * 100) + '%" title="Now · ' + fmt(n.mins) + '"></div>'
+      : "";
+    const hrs = items.reduce((t,m) => t + (m.e - m.s + 1), 0) / 60;
+
+    return '<div class="grow"><div class="daycol">' +
+      '<span class="dayname' + (isToday ? " today" : "") + '">' + d.label + '</span>' +
+      '<span class="daycount">' + items.length + " · " + (Math.round(hrs * 10) / 10) + ' h</span></div>' +
+      '<div class="lanes body" style="height:' + height + 'px">' + hourTicks() + nowline +
+      (items.length ? blocks : '<span class="gempty">nothing scheduled</span>') + '</div></div>';
+  }).join("");
+
+  const unsched = MEET.filter(m => m.day === "X" && passesFilters(m)).length;
+  out.innerHTML = '<div class="gridbox"><div class="grid">' + axisRow() + rows + '</div></div>' +
+    '<p class="gridnote"><span class="swatch" style="background:var(--accent)"></span>Lecture &nbsp; ' +
+    '<span class="swatch" style="background:var(--lab)"></span>Lab &nbsp; · &nbsp;' +
+    'blocks sit on a 9 AM – 9 PM clock; hover one for room, instructor and enrollment' +
+    (unsched ? ' · ' + unsched + ' unscheduled section' + (unsched === 1 ? "" : "s") + ' (see the Unscheduled tab)' : '') +
+    '</p>';
+}
+
+function card(m, n){
+  const live = m.day === n.dayKey && m.s >= 0 && m.s <= n.mins && n.mins <= m.e;
+  const full = m.tot >= m.max;
+  const pct = Math.min(100, Math.round(m.tot / Math.max(m.max,1) * 100));
+  const who = m.tba ? '<span class="tba">TBA (IP)</span>' : '<span class="who">' + esc(m.who) + '</span>';
+  return '<article class="card ' + (m.type === "lab" ? "lab " : "") + (live ? "live" : "") + '">' +
+    '<div class="main">' +
+      '<div class="titleline"><span class="code">' + esc(m.code) + '</span>' +
+      '<span class="cname">' + esc(m.name) + '</span></div>' +
+      '<div class="meta">' + who +
+      (m.room ? '<span>' + esc(m.room) + '</span>' : '<span>No room</span>') +
+      '<span>' + m.cr + ' cr</span></div>' +
+    '</div>' +
+    '<div class="right">' +
+      '<div class="time">' + m.timeText + '</div>' +
+      '<div class="chips">' +
+        (live ? '<span class="chip live">Live</span>' : '') +
+        '<span class="chip ' + (m.type === "lab" ? "lab" : m.type === "lec" ? "lec" : "") + '">' +
+          (m.type === "lab" ? "Lab" : m.type === "lec" ? "Lecture" : "Project") + '</span>' +
+      '</div>' +
+      '<div class="enr ' + (full ? "full" : "") + '">' + m.tot + '/' + m.max + ' enrolled' +
+        (m.tot > m.max ? ' · over' : '') + '</div>' +
+      '<div class="bar ' + (full ? "full" : "") + '"><i style="width:' + pct + '%"></i></div>' +
+    '</div>' +
+  '</article>';
+}
+
+/* ---------- printable room sheet ---------- */
+function roomGroups(room){
+  const items = MEET.filter(m => m.room === room && m.s >= 0);
+  const map = new Map();
+  items.forEach(m => {
+    const k = m.day + "|" + m.s + "|" + m.e + "|" + m.who;   // same slot AND same instructor = one class
+    if (!map.has(k)) map.set(k, {day:m.day, s:m.s, e:m.e, who:m.who, timeText:m.timeText,
+                                type:m.type, codes:[m.code], names:[m.name], tot:m.tot, max:m.max});
+    else {
+      const g = map.get(k);
+      g.codes.push(m.code);
+      if (!g.names.includes(m.name)) g.names.push(m.name);
+      if (m.type === "lab") g.type = "lab";
+      g.tot = Math.max(g.tot, m.tot); g.max = Math.max(g.max, m.max);
+    }
+  });
+  return [...map.values()];
+}
+
+/* "9:00 - 11:00 AM"  /  "11:00 AM - 1:00 PM" — end rounded up to the hour, as on the printed sheets */
+function bandLabel(s, e){
+  const end = Math.ceil((e + 1) / 60) * 60;
+  const ap = m => (Math.floor(m / 60) >= 12 ? "PM" : "AM");
+  const hm = m => { const h = Math.floor(m / 60) % 12 || 12; return h + ":" + String(m % 60).padStart(2,"0"); };
+  return ap(s) === ap(end) ? hm(s) + " - " + hm(end) + " " + ap(end)
+                           : hm(s) + " " + ap(s) + " - " + hm(end) + " " + ap(end);
+}
+/* "BCS303Lec4" -> "BCS303 - Security Principles And Practices Lec4" */
+function courseLine(codes, names){
+  if (codes.length === 1){
+    const m = codes[0].match(/^([A-Za-z]+\s?\d+)(.*)$/);
+    return m ? m[1] + " - " + names[0] + " " + m[2].trim() : codes[0] + " - " + names[0];
+  }
+  return codes.join(" = ") + " - " + names.join(" / ");
+}
+
+function buildSheet(){
+  const sheet = document.getElementById("sheet");
+  const hint = document.getElementById("roomhint");
+  if (!state.room){ sheet.innerHTML = ""; hint.innerHTML = ""; return; }
+
+  const room = state.room;
+  const groups = roomGroups(room);
+
+  // columns: Mon–Thu always, plus Fri/Sat when this room is used then
+  const days = DAYS.filter(d => "MTWR".includes(d.k) || groups.some(g => g.day === d.k));
+
+  // rows: the six standard two-hour bands, so free slots are visible too
+  const bands = [];
+  for (let s = T0; s < T1; s += 120) bands.push([s, s + 119]);
+
+  let clashes = 0;
+  const rows = bands.map(([bs,be]) => {
+    const cells = days.map(d => {
+      const here = groups.filter(g => g.day === d.k && g.s <= be && bs <= g.e)
+        .sort((a,b) => a.s - b.s);
+      if (!here.length) return '<td class="free">Students allowed to access</td>';
+      if (here.length > 1) clashes++;
+      return '<td class="occ">' + here.map(g =>
+        '<span class="sh-cell">' +
+          '<span class="sh-code">' + esc(courseLine(g.codes, g.names)) + '</span>' +
+          (g.s !== bs || g.e !== be ? '<span class="sh-when">' + g.timeText + '</span>' : '') +
+          '<span class="sh-inst">' + esc(g.who === "IP, IP" ? "TBA" : g.who) + '</span>' +
+        '</span>').join("") + '</td>';
+    }).join("");
+    return '<tr><td class="t-time">' + bandLabel(bs, be) + '</td>' + cells + '</tr>';
+  }).join("");
+
+  const printed = new Date().toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"});
+  const sessions = MEET.filter(m => m.room === room && m.s >= 0).length;
+  const usedDays = new Set(groups.map(g => g.day)).size;
+
+  sheet.innerHTML =
+    '<h1 class="sh-title">Lab Weekly Schedules - Fall 2026-27</h1>' +
+    '<h2 class="sh-room">' + esc(room) + '</h2>' +
+    '<hr class="sh-rule">' +
+    '<table class="sh-table"><thead><tr><th class="t-time">Time</th>' +
+      days.map(d => '<th>' + d.label + '</th>').join("") +
+    '</tr></thead><tbody>' + (rows || '<tr><td class="t-time">—</td>' +
+      days.map(() => '<td class="free">Students allowed to access</td>').join("") + '</tr>') +
+    '</tbody></table>' +
+    '<p class="sh-foot"><span>31 Aug – 11 Dec 2026 · TBA = instructor not yet assigned · ' +
+    'codes joined with “=” are one class taught under two course codes</span>' +
+    '<span>Printed ' + printed + '</span></p>';
+
+  hint.innerHTML = '<b>' + esc(room) + '</b> · ' + sessions + ' session' + (sessions === 1 ? "" : "s") +
+    ' across ' + usedDays + ' day' + (usedDays === 1 ? "" : "s") +
+    ' — “Print room sheet” gives the one-page A4 landscape sheet for the door' +
+    (clashes ? ' · ' + clashes + ' slot' + (clashes === 1 ? " has" : "s have") + ' two bookings at once' : '');
+}
+
+/* ---------- locate me: is this instructor free right now? ---------- */
+const DAYORDER = DAYS.map(d => d.k);
+
+function nextMeetingAfterToday(who, fromDayKey){
+  const start = DAYORDER.indexOf(fromDayKey);
+  for (let i = 1; i <= DAYORDER.length; i++){
+    const k = DAYORDER[(start < 0 ? 0 : start + i) % DAYORDER.length];
+    const list = MEET.filter(m => m.who === who && m.day === k && m.s >= 0).sort((a,b) => a.s - b.s);
+    if (list.length) return {m:list[0], day:DAYS.find(d => d.k === k).label};
+  }
+  return null;
+}
+
+function locateCard(who, n){
+  const today = MEET.filter(m => m.who === who && m.day === n.dayKey && m.s >= 0).sort((a,b) => a.s - b.s);
+  const nowList = today.filter(m => m.s <= n.mins && n.mins <= m.e);
+  const later = today.filter(m => m.s > n.mins);
+  const where = m => esc(m.code) + " · " + esc(m.room) + (m.type === "lab" ? " (lab)" : "");
+
+  let cls, chip, line, sub;
+  if (nowList.length){
+    const end = Math.max(...nowList.map(m => m.e));
+    cls = "busy"; chip = "In class";
+    line = "Teaching until <b>" + fmt(end + 1) + "</b> — " + nowList.map(where).join(" + ");
+    sub = later.length
+      ? "Then free until " + fmt(later[0].s) + ", when " + esc(later[0].code) + " starts in " + esc(later[0].room) + "."
+      : "Nothing else scheduled today.";
+  } else {
+    cls = "free"; chip = "Free now";
+    if (later.length){
+      line = "Free until <b>" + fmt(later[0].s) + "</b> — then " + where(later[0]);
+      const gap = later[0].s - n.mins;
+      sub = "That is " + (gap >= 60 ? Math.floor(gap / 60) + " h " + (gap % 60 ? (gap % 60) + " min" : "") : gap + " min") +
+            " from now · " + esc(later[0].name);
+    } else {
+      const nx = nextMeetingAfterToday(who, n.dayKey);
+      line = "Free for the rest of " + (n.dayKey ? "today" : "the weekend");
+      sub = nx ? "Next class: " + nx.day + " " + fmt(nx.m.s) + " — " + esc(nx.m.code) + " in " + esc(nx.m.room) + "."
+               : "Nothing scheduled this week.";
+    }
+  }
+
+  const rest = today.length
+    ? '<div class="loc-rest">' + today.map(m =>
+        '<span>' + fmt(m.s) + "</span> " + esc(m.code) + " · " + esc(shortRoom(m.room))).join("") + '</div>'
+    : '<div class="loc-rest">No classes at all on this day.</div>';
+
+  return '<div class="loc ' + cls + '">' +
+    '<div class="loc-top"><span class="loc-name">' + esc(labelFor(who)) + '</span>' +
+    '<span class="loc-chip">' + chip + '</span>' +
+    '<button class="linkbtn loc-week" data-who="' + esc(who).replace(/"/g,"&quot;") + '">Show their week</button></div>' +
+    '<p class="loc-line">' + line + '</p><p class="loc-sub">' + sub + '</p>' + rest + '</div>';
+}
+
+function runLocate(){
+  const box = document.getElementById("locOut");
+  const q = document.getElementById("locate").value.trim().toLowerCase();
+  if (q.length < 2){ box.innerHTML = ""; return; }
+
+  const n = dubaiNow();
+  const names = [...new Set(MEET.map(m => m.who))].filter(w => w !== "IP, IP");
+  const hits = names.filter(w => w.toLowerCase().includes(q));
+
+  if (!hits.length){
+    box.innerHTML = '<p class="loc-none">No instructor matches “' + esc(q) + '”. ' +
+      'Try a surname — ' + esc(names.slice(0,3).map(w => w.split(",")[0]).join(", ")) + ', and 21 others.</p>';
+    return;
+  }
+  const day = n.dayKey ? (DAYS.find(d => d.k === n.dayKey) || {}).label : "Sunday";
+  box.innerHTML = '<div class="loccards">' +
+    '<p class="loc-sub" style="margin:0">As of ' + day + " " + fmt(n.mins) + ' (Gulf Standard Time)' +
+    (hits.length > 1 ? ' · ' + hits.length + ' people match' : '') + '</p>' +
+    hits.slice(0,8).map(w => locateCard(w, n)).join("") + '</div>';
+
+  box.querySelectorAll(".loc-week").forEach(b => b.addEventListener("click", () => {
+    state.who = b.dataset.who; state.scope = "week"; state.now = false;
+    instSel.value = state.who;
+    document.getElementById("scopeSeg").classList.add("hot");
+    syncUI(); render();
+    document.getElementById("viewTitle").scrollIntoView({behavior:"smooth", block:"start"});
+  }));
+}
+document.getElementById("locate").addEventListener("input", runLocate);
+
+/* ---------- init ---------- */
+document.getElementById("secCount").textContent = RAW.length;
+document.getElementById("mtgCount").textContent = MEET.filter(m => m.day !== "X").length;
+const start = dubaiNow();
+if (start.dayKey) state.day = start.dayKey;
+syncUI();
+tickClock();
+render();
+setInterval(tickClock, 30000);
+</script>
+
+</body>
+</html>

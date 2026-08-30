@@ -1,0 +1,8 @@
+# Optional: lets Render configure the site automatically (Blueprint).
+# You can skip this file and set the same values in the dashboard instead.
+services:
+  - type: web
+    name: seast-timetable
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
