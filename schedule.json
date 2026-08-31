@@ -1,17 +1,17 @@
 {
- "savedAt": "2026-08-30T12:00:00.000Z",
+ "savedAt": "2026-08-31T08:34:58.142Z",
  "term": "Fall 2026-27",
  "sections": [
   [
    "BAI101Lec1",
    "AI And Modern Life",
    3,
-   50,
+   56,
    51,
    [
     [
      "AlFutaisi, Najla",
-     "MGT-201",
+     "HUB-112",
      "T",
      "12:00",
      "14:59"
@@ -27,7 +27,7 @@
    [
     [
      "AlFutaisi, Najla",
-     "HUB-101",
+     "MGT-209",
      "M",
      "15:00",
      "16:59"
@@ -46,17 +46,17 @@
    "Introduction To Artificial Intelligence",
    3,
    24,
-   20,
+   21,
    [
     [
      "AlFutaisi, Najla",
-     "HUB-101",
+     "MGT-209",
      "M",
      "15:00",
      "16:59"
     ],
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-117 Software Lab",
      "T",
      "19:00",
@@ -69,10 +69,10 @@
    "Elements Of Computing",
    3,
    24,
-   18,
+   19,
    [
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-118 Robotic Lab",
      "M",
      "17:00",
@@ -115,7 +115,7 @@
    "Elements Of Computing",
    3,
    24,
-   24,
+   23,
    [
     [
      "Abuserrieh, Lobna",
@@ -187,7 +187,7 @@
    5,
    [
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-118 Robotic Lab",
      "W",
      "17:00",
@@ -207,11 +207,11 @@
    "Logic For Computing Science",
    3,
    35,
-   25,
+   26,
    [
     [
      "El Messiry, Haytham",
-     "MGT-208",
+     "MGT-207",
      "T",
      "09:00",
      "11:59"
@@ -262,7 +262,7 @@
    "Introduction To Computing Science II",
    3,
    22,
-   15,
+   17,
    [
     [
      "Hussein, Ahmed",
@@ -311,7 +311,7 @@
    22,
    [
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-117 Software Lab",
      "M",
      "19:00",
@@ -334,7 +334,7 @@
    22,
    [
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-118 Robotic Lab",
      "W",
      "13:00",
@@ -357,7 +357,7 @@
    20,
    [
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-117 Software Lab",
      "M",
      "13:00",
@@ -387,7 +387,7 @@
      "11:59"
     ],
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-118 Robotic Lab",
      "R",
      "15:00",
@@ -410,7 +410,7 @@
      "11:59"
     ],
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-117 Software Lab",
      "R",
      "17:00",
@@ -426,7 +426,7 @@
    24,
    [
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-118 Robotic Lab",
      "T",
      "19:00",
@@ -449,7 +449,7 @@
    21,
    [
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-118 Robotic Lab",
      "M",
      "15:00",
@@ -479,7 +479,7 @@
      "11:59"
     ],
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-117 Software Lab",
      "R",
      "19:00",
@@ -502,7 +502,7 @@
      "11:59"
     ],
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-117 Software Lab",
      "W",
      "13:00",
@@ -530,8 +530,8 @@
    "BCS305Lec1",
    "Software Architecture",
    3,
-   60,
-   60,
+   65,
+   63,
    [
     [
      "Abuserrieh, Lobna",
@@ -580,7 +580,7 @@
      "12:59"
     ],
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-118 Robotic Lab",
      "R",
      "17:00",
@@ -615,11 +615,11 @@
    "BCS311Lec2",
    "Scientific Computing",
    3,
-   22,
+   24,
    22,
    [
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-118 Robotic Lab",
      "M",
      "09:00",
@@ -638,7 +638,7 @@
    "BCS311Lec3",
    "Scientific Computing",
    3,
-   23,
+   24,
    23,
    [
     [
@@ -672,7 +672,7 @@
      "11:59"
     ],
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "HUB-118 Robotic Lab",
      "T",
      "09:00",
@@ -733,7 +733,7 @@
    "Computer Science Project",
    6,
    60,
-   50,
+   51,
    [
     [
      "IP, IP",
@@ -814,7 +814,7 @@
      "11:59"
     ],
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-118 Robotic Lab",
      "T",
      "15:00",
@@ -838,7 +838,7 @@
     ],
     [
      "Turker, Turker",
-     "MGT-101",
+     "MGT-102",
      "W",
      "09:00",
      "10:59"
@@ -866,7 +866,7 @@
    "Electric Circuit I",
    3,
    18,
-   11,
+   10,
    [
     [
      "Turker, Turker",
@@ -976,7 +976,7 @@
    "Professional And Ethical Practice",
    3,
    32,
-   27,
+   28,
    [
     [
      "AlFutaisi, Najla",
@@ -1008,7 +1008,7 @@
    "Professional And Engineering Ethics",
    3,
    32,
-   27,
+   28,
    [
     [
      "AlFutaisi, Najla",
@@ -1043,7 +1043,7 @@
    18,
    [
     [
-     "IP, IP",
+     "Elnashar, Ayman",
      "MGT-105",
      "R",
      "15:00",
@@ -1059,7 +1059,7 @@
    2,
    [
     [
-     "IP, IP",
+     "Hamid, Abdulazim",
      "MGT-203",
      "S",
      "14:00",
@@ -1091,7 +1091,7 @@
    2,
    [
     [
-     "IP, IP",
+     "Hamid, Abdulazim",
      "MGT-203",
      "S",
      "10:00",
@@ -1246,7 +1246,7 @@
    "Robotics",
    3,
    30,
-   21,
+   22,
    [
     [
      "El Khatib, Ziad",
@@ -1280,7 +1280,7 @@
     ],
     [
      "El Sayed, Ahmed Abdelaziz",
-     "HUB-114",
+     "MGT-208",
      "MW",
      "12:00",
      "13:29"
@@ -1291,7 +1291,7 @@
    "MTH112Lec2",
    "Calculus 1",
    3,
-   45,
+   48,
    44,
    [
     [
@@ -1302,7 +1302,7 @@
      "14:59"
     ],
     [
-     "IP, IP",
+     "Aboueldahab, Hussein",
      "MGT-204",
      "M",
      "17:00",
@@ -1325,7 +1325,7 @@
      "17:59"
     ],
     [
-     "Elobaid, Rafida",
+     "IP, IP",
      "MGT-204",
      "R",
      "09:00",
@@ -1391,7 +1391,7 @@
    "Linear Algebra",
    3,
    35,
-   24,
+   25,
    [
     [
      "El Sayed, Ahmed Abdelaziz",
@@ -1455,7 +1455,7 @@
    "Probability And Statistics",
    3,
    35,
-   22,
+   23,
    [
     [
      "Elobaid, Rafida",
@@ -1470,12 +1470,12 @@
    "MTH203Lec1",
    "Discrete Mathematics For Computing Science",
    3,
-   45,
-   45,
+   50,
+   47,
    [
     [
      "Mohamed, Tamer",
-     "MGT-208",
+     "HUB-114",
      "MW",
      "12:00",
      "13:29"
@@ -1503,17 +1503,17 @@
    "Calculus 3",
    3,
    32,
-   15,
+   14,
    [
     [
-     "Rani, Rashmi",
+     "Hamid, Abdulazim",
      "MGT-210",
      "M",
      "13:30",
      "14:59"
     ],
     [
-     "Rani, Rashmi",
+     "Hamid, Abdulazim",
      "MGT-102",
      "T",
      "11:00",
@@ -1526,7 +1526,7 @@
    "Microprocessors And Microcontrollers",
    3,
    24,
-   22,
+   21,
    [
     [
      "IP, IP",
@@ -1621,7 +1621,7 @@
    24,
    [
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-118 Robotic Lab",
      "T",
      "19:00",
@@ -1651,7 +1651,7 @@
      "10:59"
     ],
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-117 Software Lab",
      "W",
      "13:00",
@@ -1690,7 +1690,7 @@
      "10:59"
     ],
     [
-     "IP, IP",
+     "Seyam, Ahmed",
      "HUB-118 Robotic Lab",
      "T",
      "15:00",
@@ -1781,7 +1781,7 @@
    "Robotics",
    3,
    30,
-   21,
+   22,
    [
     [
      "El Khatib, Ziad",
@@ -1814,7 +1814,7 @@
      "10:59"
     ],
     [
-     "Aboueldahab, Hussein",
+     "IP, IP",
      "HUB-116 Electronic Lab",
      "R",
      "17:00",
@@ -1827,7 +1827,7 @@
    "Modern Physics",
    3,
    16,
-   15,
+   16,
    [
     [
      "Turker, Turker",
@@ -1837,7 +1837,7 @@
      "10:59"
     ],
     [
-     "Aboueldahab, Hussein",
+     "IP, IP",
      "HUB-116 Electronic Lab",
      "W",
      "19:00",
@@ -1935,7 +1935,7 @@
    "Mobile Application Development",
    3,
    24,
-   3,
+   5,
    [
     [
      "Hussein, Ahmed",

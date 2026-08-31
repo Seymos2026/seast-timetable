@@ -377,7 +377,7 @@
     :root{color-scheme:light}
     body{background:#fff;color:#111}
     .wrap{max-width:none;padding:0}
-    .mast,.controls,.status,.roomhint,#out,#locOut,footer{display:none!important}
+    .mast,.controls,.status,.roomhint,#out,#locOut,.updater,footer{display:none!important}
     .sheet{display:flex;flex-direction:column;height:186mm;font-family:"Source Sans 3",Arial,sans-serif}
   }
   .sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -418,11 +418,44 @@
     display:flex;justify-content:space-between;gap:6mm;margin:3mm 0 0;
     font-size:7.5pt;color:#7A8590;
   }
+  /* ---------- update panel ---------- */
+  .updater{
+    margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;
+  }
+  .datasrc{font-size:12.5px;color:var(--ink-2);font-family:"IBM Plex Mono",monospace}
+  .updbody{display:none;width:100%}
+  .updbody.open{display:block}
+  .updhelp{margin:12px 0 10px;font-size:13.5px;color:var(--ink-2);max-width:78ch}
+  .updhelp b{color:var(--ink)}
+  .kbd{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink);
+  }
+  #updText{
+    width:100%;height:150px;resize:vertical;font-family:"IBM Plex Mono",monospace;font-size:12px;
+    line-height:1.5;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+    background:var(--surface);color:var(--ink);
+  }
+  #updText:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .updrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  #updReport{margin-top:12px;font-size:13px}
+  #updReport p{margin:0 0 8px}
+  .updok{color:var(--ink)}
+  .updbad{color:var(--alert)}
+  .updline{
+    padding:7px 11px;margin-bottom:6px;border-radius:7px;background:var(--surface);
+    border:1px solid var(--line);border-left:3px solid var(--accent);color:var(--ink-2);
+  }
+  .updline b{color:var(--ink)}
+  .updline.warn{border-left-color:var(--alert)}
+
   footer{
     margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
     color:var(--ink-2);font-size:12.5px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
   }
   .legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .buildtag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-2)}
   .swatch{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 
   @media (max-width:720px){
@@ -491,74 +524,97 @@
   <main id="out"></main>
   <div class="sheet" id="sheet"></div>
 
+  <section class="updater">
+    <button class="linkbtn" id="updToggle" aria-expanded="false">⟳ Update from the CUD portal</button>
+    <span class="datasrc" id="dataSrc"></span>
+    <div class="updbody" id="updBody">
+      <p class="updhelp">
+        The portal needs a login, so no page can read it automatically. The 30-second route:
+        in the portal set <b>Division</b> to <b>SEAST</b> and open the <b>Course Offering List</b>,
+        select the whole list (<span class="kbd">Ctrl</span>+<span class="kbd">A</span>), copy, and paste it below.
+        The check below lists the course prefixes it found, so you can see at a glance if another division slipped in.
+      </p>
+      <textarea id="updText" spellcheck="false" placeholder="Paste the Course Offering List here — the same text you would copy out of the portal page"></textarea>
+      <div class="updrow">
+        <button class="nowbtn" id="updParse">Check this paste</button>
+        <button class="linkbtn" id="updApply" disabled>Apply to this page</button>
+        <button class="linkbtn" id="updDownload" disabled>Download schedule.json</button>
+        <button class="linkbtn" id="updCopy" disabled>Copy JSON</button>
+        <button class="linkbtn" id="updRevert">Revert to built-in</button>
+      </div>
+      <div id="updReport"></div>
+    </div>
+  </section>
+
   <footer>
     <div class="legend">
       <span><span class="swatch" style="background:var(--accent)"></span>Lecture / seminar</span>
       <span><span class="swatch" style="background:var(--lab)"></span>Lab session</span>
       <span>TBA = instructor pending (IP)</span>
     </div>
-    <div>Times shown in Gulf Standard Time (UTC+4). R = Thursday, S = Saturday.</div>
+    <div>Times shown in Gulf Standard Time (UTC+4). R = Thursday, S = Saturday. &nbsp;·&nbsp;
+      <span class="buildtag" id="buildTag"></span></div>
   </footer>
 </div>
 
 <script>
 /* ---------- data: [code, name, credits, maxEnr, totEnr, meetings[[instructor, room, days, start, end]]] ---------- */
-const RAW = [
-["BAI101Lec1","AI And Modern Life",3,50,51,[["AlFutaisi, Najla","MGT-201","T","12:00","14:59"]]],
-["BAI201Lec1","Introduction To Artificial Intelligence",3,24,24,[["AlFutaisi, Najla","HUB-101","M","15:00","16:59"],["AlFutaisi, Najla","HUB-117 Software Lab","M","17:00","18:59"]]],
-["BAI201Lec2","Introduction To Artificial Intelligence",3,24,20,[["AlFutaisi, Najla","HUB-101","M","15:00","16:59"],["IP, IP","HUB-117 Software Lab","T","19:00","20:59"]]],
-["BCS101Lec1","Elements Of Computing",3,24,18,[["IP, IP","HUB-118 Robotic Lab","M","17:00","18:59"],["Mohamed, Tamer","MGT-204","T","11:00","12:59"]]],
+let RAW = [
+["BAI101Lec1","AI And Modern Life",3,56,51,[["AlFutaisi, Najla","HUB-112","T","12:00","14:59"]]],
+["BAI201Lec1","Introduction To Artificial Intelligence",3,24,24,[["AlFutaisi, Najla","MGT-209","M","15:00","16:59"],["AlFutaisi, Najla","HUB-117 Software Lab","M","17:00","18:59"]]],
+["BAI201Lec2","Introduction To Artificial Intelligence",3,24,21,[["AlFutaisi, Najla","MGT-209","M","15:00","16:59"],["Aboueldahab, Hussein","HUB-117 Software Lab","T","19:00","20:59"]]],
+["BCS101Lec1","Elements Of Computing",3,24,19,[["Seyam, Ahmed","HUB-118 Robotic Lab","M","17:00","18:59"],["Mohamed, Tamer","MGT-204","T","11:00","12:59"]]],
 ["BCS101Lec2","Elements Of Computing",3,24,19,[["Mohamed, Tamer","MGT-204","T","11:00","12:59"],["Mohamed, Tamer","HUB-118 Robotic Lab","W","19:00","20:59"]]],
-["BCS101Lec3","Elements Of Computing",3,24,24,[["Abuserrieh, Lobna","MGT-204","M","15:00","16:59"],["Abuserrieh, Lobna","HUB-117 Software Lab","T","15:00","16:59"]]],
+["BCS101Lec3","Elements Of Computing",3,24,23,[["Abuserrieh, Lobna","MGT-204","M","15:00","16:59"],["Abuserrieh, Lobna","HUB-117 Software Lab","T","15:00","16:59"]]],
 ["BCS101Lec4","Elements Of Computing",3,24,24,[["Abuserrieh, Lobna","MGT-204","M","15:00","16:59"],["IP, IP","HUB-117 Software Lab","T","17:00","18:59"]]],
 ["BCS101Lec5","Elements Of Computing",3,24,25,[["Mohamed, Tamer","HUB-117 Software Lab","T","09:00","10:59"],["Mohamed, Tamer","MGT-204","R","10:00","11:59"]]],
-["BCS101Lec6","Elements Of Computing",3,24,5,[["IP, IP","HUB-118 Robotic Lab","W","17:00","18:59"],["Mohamed, Tamer","MGT-204","R","10:00","11:59"]]],
-["BCS201Lec1","Logic For Computing Science",3,35,25,[["El Messiry, Haytham","MGT-208","T","09:00","11:59"]]],
+["BCS101Lec6","Elements Of Computing",3,24,5,[["Aboueldahab, Hussein","HUB-118 Robotic Lab","W","17:00","18:59"],["Mohamed, Tamer","MGT-204","R","10:00","11:59"]]],
+["BCS201Lec1","Logic For Computing Science",3,35,26,[["El Messiry, Haytham","MGT-207","T","09:00","11:59"]]],
 ["BCS201Lec2","Logic For Computing Science",3,35,23,[["IP, IP","HUB-113","W","18:00","20:58"]]],
 ["BCS202Lec1","Introduction To Computing Science II",3,22,22,[["Hussein, Ahmed","MGT-204","M","09:00","10:59"],["Hussein, Ahmed","HUB-117 Software Lab","R","10:00","11:59"]]],
-["BCS202Lec2","Introduction To Computing Science II",3,22,15,[["Hussein, Ahmed","MGT-204","M","09:00","10:59"],["IP, IP","HUB-118 Robotic Lab","R","10:00","11:59"]]],
+["BCS202Lec2","Introduction To Computing Science II",3,22,17,[["Hussein, Ahmed","MGT-204","M","09:00","10:59"],["IP, IP","HUB-118 Robotic Lab","R","10:00","11:59"]]],
 ["BCS202Lec3","Introduction To Computing Science II",3,24,25,[["eltawab, Samy","HUB-117 Software Lab","M","15:00","16:59"],["eltawab, Samy","MGT-204","R","15:00","16:59"]]],
-["BCS202Lec4","Introduction To Computing Science II",3,22,22,[["IP, IP","HUB-117 Software Lab","M","19:00","20:59"],["eltawab, Samy","MGT-204","R","15:00","16:59"]]],
-["BCS301Lec1","Operating Systems",4,22,22,[["IP, IP","HUB-118 Robotic Lab","W","13:00","14:59"],["El Messiry, Haytham","MGT-209","R","09:00","11:59"]]],
-["BCS301Lec2","Operating Systems",4,22,20,[["IP, IP","HUB-117 Software Lab","M","13:00","14:59"],["El Messiry, Haytham","MGT-209","R","09:00","11:59"]]],
-["BCS301Lec3","Operating Systems",4,22,18,[["Injadat, MohammadNoor","MGT-208","W","09:00","11:59"],["IP, IP","HUB-118 Robotic Lab","R","15:00","16:59"]]],
-["BCS301Lec4","Operating Systems",4,22,14,[["Injadat, MohammadNoor","MGT-208","W","09:00","11:59"],["IP, IP","HUB-117 Software Lab","R","17:00","18:59"]]],
-["BCS303Lec1","Security Principles And Practices",4,24,24,[["IP, IP","HUB-118 Robotic Lab","T","19:00","20:59"],["Khurana, Mehak","HUB-114","W","15:00","17:59"]]],
-["BCS303Lec2","Security Principles And Practices",4,20,21,[["IP, IP","HUB-118 Robotic Lab","M","15:00","16:59"],["Khurana, Mehak","HUB-114","W","15:00","17:59"]]],
-["BCS303Lec3","Security Principles And Practices",4,20,14,[["Khurana, Mehak","HUB-107","T","09:00","11:59"],["IP, IP","HUB-117 Software Lab","R","19:00","20:59"]]],
-["BCS303Lec4","Security Principles And Practices",4,24,24,[["Khurana, Mehak","HUB-107","T","09:00","11:59"],["IP, IP","HUB-117 Software Lab","W","13:00","14:59"]]],
+["BCS202Lec4","Introduction To Computing Science II",3,22,22,[["Aboueldahab, Hussein","HUB-117 Software Lab","M","19:00","20:59"],["eltawab, Samy","MGT-204","R","15:00","16:59"]]],
+["BCS301Lec1","Operating Systems",4,22,22,[["Aboueldahab, Hussein","HUB-118 Robotic Lab","W","13:00","14:59"],["El Messiry, Haytham","MGT-209","R","09:00","11:59"]]],
+["BCS301Lec2","Operating Systems",4,22,20,[["Aboueldahab, Hussein","HUB-117 Software Lab","M","13:00","14:59"],["El Messiry, Haytham","MGT-209","R","09:00","11:59"]]],
+["BCS301Lec3","Operating Systems",4,22,18,[["Injadat, MohammadNoor","MGT-208","W","09:00","11:59"],["Aboueldahab, Hussein","HUB-118 Robotic Lab","R","15:00","16:59"]]],
+["BCS301Lec4","Operating Systems",4,22,14,[["Injadat, MohammadNoor","MGT-208","W","09:00","11:59"],["Seyam, Ahmed","HUB-117 Software Lab","R","17:00","18:59"]]],
+["BCS303Lec1","Security Principles And Practices",4,24,24,[["Seyam, Ahmed","HUB-118 Robotic Lab","T","19:00","20:59"],["Khurana, Mehak","HUB-114","W","15:00","17:59"]]],
+["BCS303Lec2","Security Principles And Practices",4,20,21,[["Seyam, Ahmed","HUB-118 Robotic Lab","M","15:00","16:59"],["Khurana, Mehak","HUB-114","W","15:00","17:59"]]],
+["BCS303Lec3","Security Principles And Practices",4,20,14,[["Khurana, Mehak","HUB-107","T","09:00","11:59"],["Seyam, Ahmed","HUB-117 Software Lab","R","19:00","20:59"]]],
+["BCS303Lec4","Security Principles And Practices",4,24,24,[["Khurana, Mehak","HUB-107","T","09:00","11:59"],["Seyam, Ahmed","HUB-117 Software Lab","W","13:00","14:59"]]],
 ["BCS304Lec1","Data Mining",3,45,39,[["Abuserrieh, Lobna","MGT-208","M","18:00","20:59"]]],
-["BCS305Lec1","Software Architecture",3,60,60,[["Abuserrieh, Lobna","HUB-101","F","09:00","11:59"]]],
+["BCS305Lec1","Software Architecture",3,65,63,[["Abuserrieh, Lobna","HUB-101","F","09:00","11:59"]]],
 ["BCS306Lec1","Database Management Systems",3,24,24,[["Hussein, Ahmed","MGT-209","T","11:00","12:59"],["Hussein, Ahmed","HUB-117 Software Lab","R","15:00","16:59"]]],
-["BCS306Lec2","Database Management Systems",3,24,23,[["Hussein, Ahmed","MGT-209","T","11:00","12:59"],["IP, IP","HUB-118 Robotic Lab","R","17:00","18:59"]]],
+["BCS306Lec2","Database Management Systems",3,24,23,[["Hussein, Ahmed","MGT-209","T","11:00","12:59"],["Aboueldahab, Hussein","HUB-118 Robotic Lab","R","17:00","18:59"]]],
 ["BCS311Lec1","Scientific Computing",3,24,24,[["Kolankeh, Arash","HUB-114","T","19:00","20:59"],["Kolankeh, Arash","HUB-117 Software Lab","W","15:00","16:59"]]],
-["BCS311Lec2","Scientific Computing",3,22,22,[["IP, IP","HUB-118 Robotic Lab","M","09:00","10:59"],["Kolankeh, Arash","HUB-114","T","19:00","20:59"]]],
-["BCS311Lec3","Scientific Computing",3,23,23,[["Kolankeh, Arash","HUB-114","M","10:00","11:59"],["Kolankeh, Arash","HUB-118 Robotic Lab","T","17:00","18:59"]]],
-["BCS311Lec4","Scientific Computing",3,23,24,[["Kolankeh, Arash","HUB-114","M","10:00","11:59"],["IP, IP","HUB-118 Robotic Lab","T","09:00","10:59"]]],
+["BCS311Lec2","Scientific Computing",3,24,22,[["Aboueldahab, Hussein","HUB-118 Robotic Lab","M","09:00","10:59"],["Kolankeh, Arash","HUB-114","T","19:00","20:59"]]],
+["BCS311Lec3","Scientific Computing",3,24,23,[["Kolankeh, Arash","HUB-114","M","10:00","11:59"],["Kolankeh, Arash","HUB-118 Robotic Lab","T","17:00","18:59"]]],
+["BCS311Lec4","Scientific Computing",3,23,24,[["Kolankeh, Arash","HUB-114","M","10:00","11:59"],["Aboueldahab, Hussein","HUB-118 Robotic Lab","T","09:00","10:59"]]],
 ["BCS401Lec1","Ethics For Computing Professionals",3,60,52,[["Injadat, MohammadNoor","HUB-101","M","09:00","11:59"]]],
 ["BCS401Lec2","Ethics For Computing Professionals",3,50,50,[["Injadat, MohammadNoor","MGT-101","T","18:00","20:59"]]],
 ["BCS402Lec1","Computability And Complexity",3,32,31,[["Kolankeh, Arash","MGT-206","W","18:00","20:59"]]],
-["BCS410Prj1","Computer Science Project",6,60,50,[["IP, IP","","N/A","",""]]],
+["BCS410Prj1","Computer Science Project",6,60,51,[["IP, IP","","N/A","",""]]],
 ["BSD311Lec1","Human Computer Interaction",3,40,36,[["Injadat, MohammadNoor","MGT-203","R","18:00","20:59"]]],
 ["BSD410Prj1","Software Design Project",6,10,2,[["IP, IP","","N/A","",""]]],
 ["CYS401Lec1","Engineering Secure Software",3,24,21,[["Seyam, Ahmed","HUB-118 Robotic Lab","W","15:00","16:59"],["Abuserrieh, Lobna","MGT-205","R","15:00","16:59"]]],
-["CYS412Lec1","Mobile And Wireless Security",4,32,18,[["Khurana, Mehak","MGT-210","M","09:00","11:59"],["IP, IP","HUB-118 Robotic Lab","T","15:00","16:59"]]],
-["ENG102Lec1","Digital Logic",3,24,14,[["Turker, Turker","HUB-117 Software Lab","T","13:00","14:59"],["Turker, Turker","MGT-101","W","09:00","10:59"]]],
+["CYS412Lec1","Mobile And Wireless Security",4,32,18,[["Khurana, Mehak","MGT-210","M","09:00","11:59"],["Seyam, Ahmed","HUB-118 Robotic Lab","T","15:00","16:59"]]],
+["ENG102Lec1","Digital Logic",3,24,14,[["Turker, Turker","HUB-117 Software Lab","T","13:00","14:59"],["Turker, Turker","MGT-102","W","09:00","10:59"]]],
 ["ENG122Lab1","Engineering Graphics And Design",1,24,2,[["Gharib, Mohamed","HUB-119","M","09:00","10:59"]]],
-["ENG213Lec1","Electric Circuit I",3,18,11,[["Turker, Turker","HUB-116 Electronic Lab","M","15:00","16:59"],["Turker, Turker","HUB-116 Electronic Lab","R","09:00","10:59"]]],
+["ENG213Lec1","Electric Circuit I",3,18,10,[["Turker, Turker","HUB-116 Electronic Lab","M","15:00","16:59"],["Turker, Turker","HUB-116 Electronic Lab","R","09:00","10:59"]]],
 ["ENG315Lec1","Control Systems",3,24,10,[["Gharib, Mohamed","HUB-113","W","09:00","11:59"]]],
 ["ENG316Lec1","Internet Of Things And Data Science",3,24,2,[["IP, IP","MGT-210","M","16:00","17:59"],["IP, IP","HUB-117 Software Lab","T","11:00","12:59"]]],
 ["ENG317Lec1","Digital Signal Processing",3,24,14,[["El Khatib, Ziad","HUB-113","R","09:00","11:59"]]],
 ["ENG320IntCNET","Internship",2,10,1,[["IP, IP","","N/A","",""]]],
 ["ENG320IntENG","Internship",2,10,0,[["IP, IP","","N/A","",""]]],
-["ENG410Lec1","Professional And Ethical Practice",3,32,27,[["AlFutaisi, Najla","MGT-206","R","18:00","20:59"]]],
+["ENG410Lec1","Professional And Ethical Practice",3,32,28,[["AlFutaisi, Najla","MGT-206","R","18:00","20:59"]]],
 ["ENG411Prj1","Graduation Project-1",2,20,17,[["IP, IP","","N/A","",""]]],
-["ENG416Lec1","Professional And Engineering Ethics",3,32,27,[["AlFutaisi, Najla","MGT-206","R","18:00","20:59"]]],
+["ENG416Lec1","Professional And Engineering Ethics",3,32,28,[["AlFutaisi, Najla","MGT-206","R","18:00","20:59"]]],
 ["ENG420Int1","Internship",3,10,1,[["IP, IP","","N/A","",""]]],
-["IDM401Lec1","Smart Manufacturing Systems",3,32,18,[["IP, IP","MGT-105","R","15:00","17:59"]]],
-["MAI501Lec1","Programming For AI Applications",3,24,2,[["IP, IP","MGT-203","S","14:00","16:59"]]],
+["IDM401Lec1","Smart Manufacturing Systems",3,32,18,[["Elnashar, Ayman","MGT-105","R","15:00","17:59"]]],
+["MAI501Lec1","Programming For AI Applications",3,24,2,[["Hamid, Abdulazim","MGT-203","S","14:00","16:59"]]],
 ["MAI502Lec1","Introduction To Artificial Intelligence",3,24,2,[["IP, IP","MGT-103","F","14:00","16:59"]]],
-["MAI503Lec1","Applied Discrete Mathematics",3,24,2,[["IP, IP","MGT-203","S","10:00","12:59"]]],
+["MAI503Lec1","Applied Discrete Mathematics",3,24,2,[["Hamid, Abdulazim","MGT-203","S","10:00","12:59"]]],
 ["MAI600Lec1","Mathematics And Statistics For AI",3,30,16,[["Kamalov, Firuz","MGT-206","F","18:00","20:59"]]],
 ["MAI601Lec1","Data Mining",3,30,11,[["Elnashar, Ayman","MGT-206","F","15:00","17:59"]]],
 ["MAI602Lec1","Machine Learning",3,30,9,[["Garg, Sahil","MGT-206","S","10:00","12:59"]]],
@@ -567,40 +623,40 @@ const RAW = [
 ["MAI656Lec1","Nature Language Processing",3,30,5,[["Kolankeh, Arash","MGT-205","S","10:00","12:59"]]],
 ["MEC305Lec1","Mechanical Vibrations",3,24,16,[["Gharib, Mohamed","MGT-203","T","13:00","14:59"],["Gharib, Mohamed","HUB-104 Mechatronics Lab","W","13:00","14:59"]]],
 ["MEC415Lec1","Computer Integrated Manufacturing (CIM)",3,24,24,[["El Khatib, Ziad","HUB-113","M","19:00","20:59"],["El Khatib, Ziad","HUB-104 Mechatronics Lab","W","19:00","20:59"]]],
-["MEC421Lec1","Robotics",3,30,21,[["El Khatib, Ziad","HUB-104 Mechatronics Lab","T","17:00","18:59"],["El Khatib, Ziad","HUB-104 Mechatronics Lab","W","17:00","18:59"]]],
-["MTH112Lec1","Calculus 1",3,45,45,[["IP, IP","HUB-114","M","09:00","09:59"],["El Sayed, Ahmed Abdelaziz","HUB-114","MW","12:00","13:29"]]],
-["MTH112Lec2","Calculus 1",3,45,44,[["El Sayed, Ahmed Abdelaziz","HUB-114","MW","13:30","14:59"],["IP, IP","MGT-204","M","17:00","17:59"]]],
-["MTH112Lec3","Calculus 1",3,35,24,[["Elobaid, Rafida","MGT-103","T","16:30","17:59"],["Elobaid, Rafida","MGT-204","R","09:00","09:59"],["Elobaid, Rafida","HUB-114","R","16:30","17:59"]]],
+["MEC421Lec1","Robotics",3,30,22,[["El Khatib, Ziad","HUB-104 Mechatronics Lab","T","17:00","18:59"],["El Khatib, Ziad","HUB-104 Mechatronics Lab","W","17:00","18:59"]]],
+["MTH112Lec1","Calculus 1",3,45,45,[["IP, IP","HUB-114","M","09:00","09:59"],["El Sayed, Ahmed Abdelaziz","MGT-208","MW","12:00","13:29"]]],
+["MTH112Lec2","Calculus 1",3,48,44,[["El Sayed, Ahmed Abdelaziz","HUB-114","MW","13:30","14:59"],["Aboueldahab, Hussein","MGT-204","M","17:00","17:59"]]],
+["MTH112Lec3","Calculus 1",3,35,24,[["Elobaid, Rafida","MGT-103","T","16:30","17:59"],["IP, IP","MGT-204","R","09:00","09:59"],["Elobaid, Rafida","HUB-114","R","16:30","17:59"]]],
 ["MTH112LecARC 1","Calculus 1",3,32,25,[["Alotaibi, Emran","MGT-102","M","13:30","14:59"],["Alotaibi, Emran","MGT-106","W","12:00","13:29"],["IP, IP","MGT-101","R","11:00","11:59"]]],
 ["MTH114Lec1","Linear Algebra",3,37,37,[["El Sayed, Ahmed Abdelaziz","MGT-208","TW","15:00","16:29"]]],
-["MTH114Lec2","Linear Algebra",3,35,24,[["El Sayed, Ahmed Abdelaziz","MGT-207","MR","09:00","10:29"]]],
+["MTH114Lec2","Linear Algebra",3,35,25,[["El Sayed, Ahmed Abdelaziz","MGT-207","MR","09:00","10:29"]]],
 ["MTH114Lec3","Linear Algebra",3,35,35,[["Rani, Rashmi","MGT-208","TW","16:30","17:59"]]],
 ["MTH130Lec1","Probability And Statistics",3,35,35,[["Elobaid, Rafida","MGT-107","MW","12:00","13:29"]]],
 ["MTH130Lec2","Probability And Statistics",3,35,35,[["Elobaid, Rafida","MGT-208","MW","13:30","14:59"]]],
-["MTH130Lec3","Probability And Statistics",3,35,22,[["Elobaid, Rafida","MGT-207","MR","10:30","11:59"]]],
-["MTH203Lec1","Discrete Mathematics For Computing Science",3,45,45,[["Mohamed, Tamer","MGT-208","MW","12:00","13:29"]]],
+["MTH130Lec3","Probability And Statistics",3,35,23,[["Elobaid, Rafida","MGT-207","MR","10:30","11:59"]]],
+["MTH203Lec1","Discrete Mathematics For Computing Science",3,50,47,[["Mohamed, Tamer","HUB-114","MW","12:00","13:29"]]],
 ["MTH203Lec2","Discrete Mathematics For Computing Science",3,40,40,[["Mohamed, Tamer","MGT-107","MW","13:30","14:59"]]],
-["MTH212Lec1","Calculus 3",3,32,15,[["Rani, Rashmi","MGT-210","M","13:30","14:59"],["Rani, Rashmi","MGT-102","T","11:00","12:29"]]],
-["NET105Lec1","Microprocessors And Microcontrollers",3,24,22,[["IP, IP","HUB-118 Robotic Lab","M","19:00","20:59"],["Turker, Turker","MGT-204","W","11:00","12:59"]]],
+["MTH212Lec1","Calculus 3",3,32,14,[["Hamid, Abdulazim","MGT-210","M","13:30","14:59"],["Hamid, Abdulazim","MGT-102","T","11:00","12:29"]]],
+["NET105Lec1","Microprocessors And Microcontrollers",3,24,21,[["IP, IP","HUB-118 Robotic Lab","M","19:00","20:59"],["Turker, Turker","MGT-204","W","11:00","12:59"]]],
 ["NET105Lec2","Microprocessors And Microcontrollers",3,24,8,[["IP, IP","HUB-116 Electronic Lab","M","17:00","18:59"],["Turker, Turker","MGT-204","W","11:00","12:59"]]],
 ["NET120Lec1","LAN Switching And Routing",3,24,13,[["Faheem, Yasir","HUB-115 Networking Lab","T","17:00","18:59"],["Faheem, Yasir","MGT-205","W","16:00","17:59"]]],
 ["NET121LecCN1","Network Operating Systems",3,24,8,[["Faheem, Yasir","MGT-203","T","11:00","12:59"],["Faheem, Yasir","HUB-115 Networking Lab","W","11:00","12:59"]]],
-["NET220LecC1","Network Security And Administration",3,24,24,[["IP, IP","HUB-118 Robotic Lab","T","19:00","20:59"],["Khurana, Mehak","HUB-114","W","15:00","16:59"]]],
-["NET220LecC2","Network Security And Administration",3,24,24,[["Khurana, Mehak","HUB-107","T","09:00","10:59"],["IP, IP","HUB-117 Software Lab","W","13:00","14:59"]]],
+["NET220LecC1","Network Security And Administration",3,24,24,[["Seyam, Ahmed","HUB-118 Robotic Lab","T","19:00","20:59"],["Khurana, Mehak","HUB-114","W","15:00","16:59"]]],
+["NET220LecC2","Network Security And Administration",3,24,24,[["Khurana, Mehak","HUB-107","T","09:00","10:59"],["Seyam, Ahmed","HUB-117 Software Lab","W","13:00","14:59"]]],
 ["NET221Lec1","Communication Technology",3,24,7,[["eltawab, Samy","MGT-106","M","18:00","20:59"]]],
-["NET403Lec1","Mobile Security",3,32,18,[["Khurana, Mehak","MGT-210","M","09:00","10:59"],["IP, IP","HUB-118 Robotic Lab","T","15:00","16:59"]]],
+["NET403Lec1","Mobile Security",3,32,18,[["Khurana, Mehak","MGT-210","M","09:00","10:59"],["Seyam, Ahmed","HUB-118 Robotic Lab","T","15:00","16:59"]]],
 ["NET410Lec1","Enterprise Network Design",3,24,20,[["Faheem, Yasir","HUB-115 Networking Lab","T","13:00","14:59"],["Faheem, Yasir","HUB-101","R","19:00","20:59"]]],
 ["NET440Prj1","CNET Project 1",2,20,16,[["IP, IP","","N/A","",""]]],
 ["NET441Prj1","CNET Project 2",2,10,0,[["IP, IP","","N/A","",""]]],
 ["PHY012Lec1","Pre-Physics",0,18,3,[["Saidi, Ziyad","HUB-116 Electronic Lab","W","15:00","16:59"],["Saidi, Ziyad","HUB-116 Electronic Lab","W","17:00","18:59"]]],
-["RAI401Lec1","Robotics",3,30,21,[["El Khatib, Ziad","HUB-104 Mechatronics Lab","T","17:00","18:59"],["El Khatib, Ziad","HUB-104 Mechatronics Lab","W","17:00","18:59"]]],
-["SCI210Lec1","Modern Physics",3,16,14,[["Turker, Turker","MGT-203","T","09:00","10:59"],["Aboueldahab, Hussein","HUB-116 Electronic Lab","R","17:00","18:59"]]],
-["SCI210Lec2","Modern Physics",3,16,15,[["Turker, Turker","MGT-203","T","09:00","10:59"],["Aboueldahab, Hussein","HUB-116 Electronic Lab","W","19:00","20:59"]]],
+["RAI401Lec1","Robotics",3,30,22,[["El Khatib, Ziad","HUB-104 Mechatronics Lab","T","17:00","18:59"],["El Khatib, Ziad","HUB-104 Mechatronics Lab","W","17:00","18:59"]]],
+["SCI210Lec1","Modern Physics",3,16,14,[["Turker, Turker","MGT-203","T","09:00","10:59"],["IP, IP","HUB-116 Electronic Lab","R","17:00","18:59"]]],
+["SCI210Lec2","Modern Physics",3,16,16,[["Turker, Turker","MGT-203","T","09:00","10:59"],["IP, IP","HUB-116 Electronic Lab","W","19:00","20:59"]]],
 ["SCI220Lec1","Engineering Mechanics",3,30,21,[["Gharib, Mohamed","MGT-105","T","15:00","17:59"]]],
 ["SWS110Lec1","Programming 1",3,24,25,[["Abuserrieh, Lobna","HUB-117 Software Lab","T","09:00","10:59"],["Abuserrieh, Lobna","MGT-204","R","10:00","11:59"]]],
 ["SWS111Lec1","Programming 2",3,22,22,[["Hussein, Ahmed","MGT-204","M","09:00","10:59"],["Hussein, Ahmed","HUB-117 Software Lab","R","10:00","11:59"]]],
 ["SWS111Lec2","Programming 2",3,24,25,[["eltawab, Samy","HUB-117 Software Lab","M","15:00","16:59"],["eltawab, Samy","MGT-204","R","15:00","16:59"]]],
-["SWS315Lec1","Mobile Application Development",3,24,3,[["Hussein, Ahmed","MGT-204","M","13:00","14:59"],["IP, IP","HUB-115 Networking Lab","R","15:00","16:59"]]]
+["SWS315Lec1","Mobile Application Development",3,24,5,[["Hussein, Ahmed","MGT-204","M","13:00","14:59"],["IP, IP","HUB-115 Networking Lab","R","15:00","16:59"]]]
 ];
 
 const DAYS = [
@@ -621,23 +677,27 @@ const fmt = mins => {
   const hh = h % 12 === 0 ? 12 : h % 12;
   return hh + ":" + String(m).padStart(2,"0") + " " + ap;
 };
-const MEET = [];
-RAW.forEach(([code,name,cr,max,tot,rows]) => {
-  rows.forEach(([who,room,days,st,en]) => {
-    const isLab = /lab/i.test(room) || /Lab\d*$/i.test(code);
-    const base = {code,name,cr,max,tot,who,room,
-      type: days === "N/A" ? "other" : (isLab ? "lab" : "lec"),
-      tba: who === "IP, IP"};
-    if (days === "N/A"){
-      MEET.push({...base, day:"X", s:-1, e:-1, timeText:"Unscheduled"});
-    } else {
-      days.split("").forEach(d => {
-        MEET.push({...base, day:d, s:toMin(st), e:toMin(en),
-          timeText: fmt(toMin(st)) + " – " + fmt(toMin(en))});
-      });
-    }
+let MEET = [];
+function buildMeet(){
+  MEET = [];
+  RAW.forEach(([code,name,cr,max,tot,rows]) => {
+    rows.forEach(([who,room,days,st,en]) => {
+      const isLab = /lab/i.test(room) || /Lab\d*$/i.test(code);
+      const base = {code,name,cr,max,tot,who,room,
+        type: days === "N/A" ? "other" : (isLab ? "lab" : "lec"),
+        tba: who === "IP, IP"};
+      if (days === "N/A"){
+        MEET.push({...base, day:"X", s:-1, e:-1, timeText:"Unscheduled"});
+      } else {
+        days.split("").forEach(d => {
+          MEET.push({...base, day:d, s:toMin(st), e:toMin(en),
+            timeText: fmt(toMin(st)) + " – " + fmt(toMin(en))});
+        });
+      }
+    });
   });
-});
+}
+buildMeet();
 
 /* ---------- state ---------- */
 const state = {day:"M", type:"all", who:"", room:"", q:"", now:false, scope:"day", view:"grid"};
@@ -685,11 +745,25 @@ function fillSelect(sel, placeholder, values){
   sel.innerHTML = '<option value="">' + placeholder + '</option>' +
     values.map(v => '<option value="' + v.replace(/"/g,'&quot;') + '">' + v + '</option>').join("");
 }
-const instructors = [...new Set(MEET.map(m => m.who))].filter(w => w !== "IP, IP").sort((a,b)=>a.localeCompare(b));
-fillSelect(instSel, "All instructors (" + instructors.length + ")", instructors.concat(["IP, IP"]));
-instSel.querySelector('option[value="IP, IP"]').textContent = "TBA (instructor pending)";
-const rooms = [...new Set(MEET.map(m => m.room))].filter(Boolean).sort((a,b)=>a.localeCompare(b));
-fillSelect(roomSel, "All rooms (" + rooms.length + ")", rooms);
+function refreshControls(){
+  const keepWho = state.who, keepRoom = state.room;
+  const instructors = [...new Set(MEET.map(m => m.who))].filter(w => w !== "IP, IP").sort((a,b)=>a.localeCompare(b));
+  fillSelect(instSel, "All instructors (" + instructors.length + ")", instructors.concat(["IP, IP"]));
+  const ip = instSel.querySelector('option[value="IP, IP"]');
+  if (ip) ip.textContent = "TBA (instructor pending)";
+  const rooms = [...new Set(MEET.map(m => m.room))].filter(Boolean).sort((a,b)=>a.localeCompare(b));
+  fillSelect(roomSel, "All rooms (" + rooms.length + ")", rooms);
+  instSel.value = [...instSel.options].some(o => o.value === keepWho) ? keepWho : (state.who = "", "");
+  roomSel.value = [...roomSel.options].some(o => o.value === keepRoom) ? keepRoom : (state.room = "", "");
+  document.querySelectorAll(".day").forEach(b => {
+    const n = b.querySelector(".n");
+    if (n) n.textContent = dayCount(b.dataset.day);
+  });
+  document.getElementById("secCount").textContent = RAW.length;
+  document.getElementById("mtgCount").textContent = MEET.filter(m => m.day !== "X").length;
+  document.getElementById("printBtn").disabled = !state.room;
+}
+refreshControls();
 
 instSel.addEventListener("change", e => {
   state.who = e.target.value;
@@ -1160,7 +1234,195 @@ function runLocate(){
 }
 document.getElementById("locate").addEventListener("input", runLocate);
 
+/* ---------- update from the portal (paste in, no login needed) ---------- */
+const LSKEY = "seast.schedule.v1";
+let DATA_SRC = "portal snapshot · 31 Aug 2026";
+let pending = null;
+
+function t24(s){
+  const m = String(s).match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)/i);
+  if (!m) return null;
+  let h = +m[1] % 12;
+  if (/pm/i.test(m[3])) h += 12;
+  return String(h).padStart(2,"0") + ":" + m[2];
+}
+
+const cleanName = s => String(s || "").replace(/\s+,/g, ",").replace(/\s+/g, " ").trim();
+function parsePortal(text){
+  const sections = [], skipped = [];
+  let cur = null;
+  text.split(/\r?\n/).forEach(line => {
+    if (!line.trim()) return;
+    if (/^Course Offering List/i.test(line.trim())) return;
+    let f = (line.includes("\t") ? line.split("\t") : line.split(/ {2,}/)).map(x => x.trim());
+    if (/^Course$/i.test(f[0]) || /^Instructor$/i.test(f[0])) return;          // header rows
+    // section row:  code | name | credits | start date | end date | max | total
+    if (f.length >= 7 && /^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(f[3] || "")){
+      cur = [f[0], f[1], Number(f[2]) || 0, Number(f[5]) || 0, Number(f[6]) || 0, []];
+      sections.push(cur);
+      return;
+    }
+    // meeting row:  instructor | room | days | Weekly | start | end | max | total
+    if (cur && f.length >= 6 && /\d{1,2}:\d{2}/.test(f[4] || "")){
+      f[0] = cleanName(f[0]); f[1] = cleanName(f[1]);
+      const days = (f[2] || "").replace(/[\\\/]/g, "/").toUpperCase();
+      const st = t24(f[4]), en = t24(f[5]);
+      if (days === "N/A" || !st || !en || (st === "00:00" && en === "00:00")){
+        cur[5].push([f[0], f[1] || "", "N/A", "", ""]);
+      } else if (/^[MTWRFS]+$/.test(days)){
+        cur[5].push([f[0], f[1] || "", days, st, en]);
+      } else {
+        skipped.push(line.trim().slice(0,70));
+      }
+      return;
+    }
+    skipped.push(line.trim().slice(0,70));
+  });
+  return {sections: sections.filter(s => s[5].length), skipped};
+}
+
+function diffSections(oldRaw, newRaw){
+  const sig = s => JSON.stringify(s[5]);
+  const oldMap = new Map(oldRaw.map(s => [s[0], s]));
+  const newMap = new Map(newRaw.map(s => [s[0], s]));
+  const added = [...newMap.keys()].filter(k => !oldMap.has(k));
+  const removed = [...oldMap.keys()].filter(k => !newMap.has(k));
+  const moved = [], enr = [];
+  newMap.forEach((s,k) => {
+    const o = oldMap.get(k);
+    if (!o) return;
+    if (sig(o) !== sig(s)) moved.push(k);
+    else if (o[4] !== s[4] || o[3] !== s[3]) enr.push(k + " " + o[4] + "→" + s[4]);
+  });
+  return {added, removed, moved, enr};
+}
+
+function updReport(html){ document.getElementById("updReport").innerHTML = html; }
+
+document.getElementById("updToggle").addEventListener("click", () => {
+  const body = document.getElementById("updBody"), btn = document.getElementById("updToggle");
+  const open = body.classList.toggle("open");
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
+});
+
+document.getElementById("updParse").addEventListener("click", () => {
+  const text = document.getElementById("updText").value;
+  if (text.trim().length < 40){ updReport('<p class="updbad">Nothing pasted yet.</p>'); return; }
+  const {sections, skipped} = parsePortal(text);
+  if (!sections.length){
+    updReport('<p class="updbad"><b>Could not read that paste.</b> It should look like the portal list: ' +
+      'a course row, then its instructor/room/day rows, columns separated by tabs. ' +
+      'Copying the rendered table from the browser (not a screenshot or PDF) gives the right shape.</p>');
+    return;
+  }
+  const meetings = sections.reduce((t,s) => t + s[5].filter(r => r[2] !== "N/A").reduce((u,r) => u + r[2].length, 0), 0);
+  const prefixes = [...new Set(sections.map(s => (s[0].match(/^[A-Za-z]+/) || [""])[0].toUpperCase()))].sort();
+  const d = diffSections(RAW, sections);
+  const list = (label, arr, cls) => arr.length
+    ? '<div class="updline ' + (cls || "") + '"><b>' + label + " (" + arr.length + ")</b> " +
+      esc(arr.slice(0,14).join(", ")) + (arr.length > 14 ? " …" : "") + '</div>' : "";
+
+  pending = sections;
+  document.getElementById("updApply").disabled = false;
+  document.getElementById("updDownload").disabled = false;
+  document.getElementById("updCopy").disabled = false;
+
+  updReport(
+    '<p class="updok"><b>Read ' + sections.length + ' sections</b> · ' + meetings + ' weekly meetings · ' +
+    'course prefixes: ' + esc(prefixes.join(", ")) + '</p>' +
+    list("New sections", d.added) +
+    list("Sections gone", d.removed, "warn") +
+    list("Times, rooms or instructors changed", d.moved, "warn") +
+    list("Enrollment changed", d.enr) +
+    (!d.added.length && !d.removed.length && !d.moved.length
+      ? '<div class="updline">No timetable changes against what this page already shows' +
+        (d.enr.length ? " (only enrollment numbers moved)" : "") + '.</div>' : "") +
+    (skipped.length ? '<div class="updline warn"><b>Ignored ' + skipped.length + ' line' +
+      (skipped.length === 1 ? "" : "s") + '</b> that did not look like course or meeting rows — ' +
+      'usually page furniture. First: ' + esc(skipped[0]) + '</div>' : "")
+  );
+});
+
+function applyData(sections, srcLabel){
+  RAW = sections;
+  buildMeet();
+  refreshControls();
+  buildSheet();
+  render();
+  DATA_SRC = srcLabel;
+  document.getElementById("dataSrc").textContent = "Showing: " + srcLabel;
+}
+
+document.getElementById("updApply").addEventListener("click", () => {
+  if (!pending) return;
+  const savedAt = new Date().toISOString();
+  try { localStorage.setItem(LSKEY, JSON.stringify({savedAt, sections:pending})); } catch(e){}
+  applyData(pending, "pasted update · " + new Date(savedAt).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}));
+  updReport('<p class="updok"><b>Applied.</b> This browser will keep showing the updated list. ' +
+    'To change it for everyone on the hosted page, download <span class="kbd">schedule.json</span> and upload it next to index.html.</p>');
+});
+
+function jsonBlobText(){
+  return JSON.stringify({savedAt:new Date().toISOString(), term:"Fall 2026-27", sections:pending}, null, 1);
+}
+document.getElementById("updDownload").addEventListener("click", () => {
+  if (!pending) return;
+  try {
+    const url = URL.createObjectURL(new Blob([jsonBlobText()], {type:"application/json"}));
+    const a = document.createElement("a");
+    a.href = url; a.download = "schedule.json"; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    updReport('<p class="updok">Saving <span class="kbd">schedule.json</span> — upload it beside index.html and the hosted page picks it up.<br>' +
+      'If no file appeared, this preview blocks downloads: use <b>Copy JSON</b> instead, or do this on the hosted page.</p>');
+  } catch(e){
+    updReport('<p class="updbad">This viewer blocks downloads. Use <b>Copy JSON</b> instead and paste it into schedule.json.</p>');
+  }
+});
+document.getElementById("updCopy").addEventListener("click", async () => {
+  if (!pending) return;
+  try { await navigator.clipboard.writeText(jsonBlobText());
+    updReport('<p class="updok">JSON copied. Paste it into <span class="kbd">schedule.json</span> beside index.html.</p>');
+  } catch(e){ updReport('<p class="updbad">Clipboard blocked here — use Download instead.</p>'); }
+});
+document.getElementById("updRevert").addEventListener("click", () => {
+  try { localStorage.removeItem(LSKEY); } catch(e){}
+  location.reload();
+});
+
+/* load order: schedule.json beside the page, or a pasted update kept in this browser — newest wins */
+async function loadExternal(){
+  let fileData = null;
+  if (location.protocol === "http:" || location.protocol === "https:"){
+    try {
+      const r = await fetch("schedule.json", {cache:"no-store"});
+      if (r.ok){
+        const j = await r.json();
+        if (Array.isArray(j.sections) && j.sections.length) fileData = j;
+      }
+    } catch(e){}
+  }
+  let local = null;
+  try {
+    const s = JSON.parse(localStorage.getItem(LSKEY) || "null");
+    if (s && Array.isArray(s.sections) && s.sections.length) local = s;
+  } catch(e){}
+
+  let pick = null, label = DATA_SRC;
+  if (fileData && local) pick = (local.savedAt > (fileData.savedAt || "")) ? local : fileData;
+  else pick = fileData || local;
+  if (pick){
+    const when = new Date(pick.savedAt || Date.now()).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+    label = (pick === local ? "pasted update · " : "schedule.json · ") + when;
+    applyData(pick.sections, label);
+  } else {
+    document.getElementById("dataSrc").textContent = "Showing: " + DATA_SRC;
+  }
+}
+
 /* ---------- init ---------- */
+const BUILD = "build 9 · data 31 Aug 2026";
+document.getElementById("buildTag").textContent = BUILD;
+console.log("SEAST timetable — " + BUILD);
 document.getElementById("secCount").textContent = RAW.length;
 document.getElementById("mtgCount").textContent = MEET.filter(m => m.day !== "X").length;
 const start = dubaiNow();
@@ -1168,6 +1430,7 @@ if (start.dayKey) state.day = start.dayKey;
 syncUI();
 tickClock();
 render();
+loadExternal();
 setInterval(tickClock, 30000);
 </script>
 
