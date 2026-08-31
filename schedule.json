@@ -1,0 +1,1957 @@
+{
+ "savedAt": "2026-08-30T12:00:00.000Z",
+ "term": "Fall 2026-27",
+ "sections": [
+  [
+   "BAI101Lec1",
+   "AI And Modern Life",
+   3,
+   50,
+   51,
+   [
+    [
+     "AlFutaisi, Najla",
+     "MGT-201",
+     "T",
+     "12:00",
+     "14:59"
+    ]
+   ]
+  ],
+  [
+   "BAI201Lec1",
+   "Introduction To Artificial Intelligence",
+   3,
+   24,
+   24,
+   [
+    [
+     "AlFutaisi, Najla",
+     "HUB-101",
+     "M",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "AlFutaisi, Najla",
+     "HUB-117 Software Lab",
+     "M",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "BAI201Lec2",
+   "Introduction To Artificial Intelligence",
+   3,
+   24,
+   20,
+   [
+    [
+     "AlFutaisi, Najla",
+     "HUB-101",
+     "M",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "T",
+     "19:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "BCS101Lec1",
+   "Elements Of Computing",
+   3,
+   24,
+   18,
+   [
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "M",
+     "17:00",
+     "18:59"
+    ],
+    [
+     "Mohamed, Tamer",
+     "MGT-204",
+     "T",
+     "11:00",
+     "12:59"
+    ]
+   ]
+  ],
+  [
+   "BCS101Lec2",
+   "Elements Of Computing",
+   3,
+   24,
+   19,
+   [
+    [
+     "Mohamed, Tamer",
+     "MGT-204",
+     "T",
+     "11:00",
+     "12:59"
+    ],
+    [
+     "Mohamed, Tamer",
+     "HUB-118 Robotic Lab",
+     "W",
+     "19:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "BCS101Lec3",
+   "Elements Of Computing",
+   3,
+   24,
+   24,
+   [
+    [
+     "Abuserrieh, Lobna",
+     "MGT-204",
+     "M",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "Abuserrieh, Lobna",
+     "HUB-117 Software Lab",
+     "T",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "BCS101Lec4",
+   "Elements Of Computing",
+   3,
+   24,
+   24,
+   [
+    [
+     "Abuserrieh, Lobna",
+     "MGT-204",
+     "M",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "T",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "BCS101Lec5",
+   "Elements Of Computing",
+   3,
+   24,
+   25,
+   [
+    [
+     "Mohamed, Tamer",
+     "HUB-117 Software Lab",
+     "T",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "Mohamed, Tamer",
+     "MGT-204",
+     "R",
+     "10:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS101Lec6",
+   "Elements Of Computing",
+   3,
+   24,
+   5,
+   [
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "W",
+     "17:00",
+     "18:59"
+    ],
+    [
+     "Mohamed, Tamer",
+     "MGT-204",
+     "R",
+     "10:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS201Lec1",
+   "Logic For Computing Science",
+   3,
+   35,
+   25,
+   [
+    [
+     "El Messiry, Haytham",
+     "MGT-208",
+     "T",
+     "09:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS201Lec2",
+   "Logic For Computing Science",
+   3,
+   35,
+   23,
+   [
+    [
+     "IP, IP",
+     "HUB-113",
+     "W",
+     "18:00",
+     "20:58"
+    ]
+   ]
+  ],
+  [
+   "BCS202Lec1",
+   "Introduction To Computing Science II",
+   3,
+   22,
+   22,
+   [
+    [
+     "Hussein, Ahmed",
+     "MGT-204",
+     "M",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "Hussein, Ahmed",
+     "HUB-117 Software Lab",
+     "R",
+     "10:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS202Lec2",
+   "Introduction To Computing Science II",
+   3,
+   22,
+   15,
+   [
+    [
+     "Hussein, Ahmed",
+     "MGT-204",
+     "M",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "R",
+     "10:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS202Lec3",
+   "Introduction To Computing Science II",
+   3,
+   24,
+   25,
+   [
+    [
+     "eltawab, Samy",
+     "HUB-117 Software Lab",
+     "M",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "eltawab, Samy",
+     "MGT-204",
+     "R",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "BCS202Lec4",
+   "Introduction To Computing Science II",
+   3,
+   22,
+   22,
+   [
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "M",
+     "19:00",
+     "20:59"
+    ],
+    [
+     "eltawab, Samy",
+     "MGT-204",
+     "R",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "BCS301Lec1",
+   "Operating Systems",
+   4,
+   22,
+   22,
+   [
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "W",
+     "13:00",
+     "14:59"
+    ],
+    [
+     "El Messiry, Haytham",
+     "MGT-209",
+     "R",
+     "09:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS301Lec2",
+   "Operating Systems",
+   4,
+   22,
+   20,
+   [
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "M",
+     "13:00",
+     "14:59"
+    ],
+    [
+     "El Messiry, Haytham",
+     "MGT-209",
+     "R",
+     "09:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS301Lec3",
+   "Operating Systems",
+   4,
+   22,
+   18,
+   [
+    [
+     "Injadat, MohammadNoor",
+     "MGT-208",
+     "W",
+     "09:00",
+     "11:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "R",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "BCS301Lec4",
+   "Operating Systems",
+   4,
+   22,
+   14,
+   [
+    [
+     "Injadat, MohammadNoor",
+     "MGT-208",
+     "W",
+     "09:00",
+     "11:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "R",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "BCS303Lec1",
+   "Security Principles And Practices",
+   4,
+   24,
+   24,
+   [
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "T",
+     "19:00",
+     "20:59"
+    ],
+    [
+     "Khurana, Mehak",
+     "HUB-114",
+     "W",
+     "15:00",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "BCS303Lec2",
+   "Security Principles And Practices",
+   4,
+   20,
+   21,
+   [
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "M",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "Khurana, Mehak",
+     "HUB-114",
+     "W",
+     "15:00",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "BCS303Lec3",
+   "Security Principles And Practices",
+   4,
+   20,
+   14,
+   [
+    [
+     "Khurana, Mehak",
+     "HUB-107",
+     "T",
+     "09:00",
+     "11:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "R",
+     "19:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "BCS303Lec4",
+   "Security Principles And Practices",
+   4,
+   24,
+   24,
+   [
+    [
+     "Khurana, Mehak",
+     "HUB-107",
+     "T",
+     "09:00",
+     "11:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "W",
+     "13:00",
+     "14:59"
+    ]
+   ]
+  ],
+  [
+   "BCS304Lec1",
+   "Data Mining",
+   3,
+   45,
+   39,
+   [
+    [
+     "Abuserrieh, Lobna",
+     "MGT-208",
+     "M",
+     "18:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "BCS305Lec1",
+   "Software Architecture",
+   3,
+   60,
+   60,
+   [
+    [
+     "Abuserrieh, Lobna",
+     "HUB-101",
+     "F",
+     "09:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS306Lec1",
+   "Database Management Systems",
+   3,
+   24,
+   24,
+   [
+    [
+     "Hussein, Ahmed",
+     "MGT-209",
+     "T",
+     "11:00",
+     "12:59"
+    ],
+    [
+     "Hussein, Ahmed",
+     "HUB-117 Software Lab",
+     "R",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "BCS306Lec2",
+   "Database Management Systems",
+   3,
+   24,
+   23,
+   [
+    [
+     "Hussein, Ahmed",
+     "MGT-209",
+     "T",
+     "11:00",
+     "12:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "R",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "BCS311Lec1",
+   "Scientific Computing",
+   3,
+   24,
+   24,
+   [
+    [
+     "Kolankeh, Arash",
+     "HUB-114",
+     "T",
+     "19:00",
+     "20:59"
+    ],
+    [
+     "Kolankeh, Arash",
+     "HUB-117 Software Lab",
+     "W",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "BCS311Lec2",
+   "Scientific Computing",
+   3,
+   22,
+   22,
+   [
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "M",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "Kolankeh, Arash",
+     "HUB-114",
+     "T",
+     "19:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "BCS311Lec3",
+   "Scientific Computing",
+   3,
+   23,
+   23,
+   [
+    [
+     "Kolankeh, Arash",
+     "HUB-114",
+     "M",
+     "10:00",
+     "11:59"
+    ],
+    [
+     "Kolankeh, Arash",
+     "HUB-118 Robotic Lab",
+     "T",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "BCS311Lec4",
+   "Scientific Computing",
+   3,
+   23,
+   24,
+   [
+    [
+     "Kolankeh, Arash",
+     "HUB-114",
+     "M",
+     "10:00",
+     "11:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "T",
+     "09:00",
+     "10:59"
+    ]
+   ]
+  ],
+  [
+   "BCS401Lec1",
+   "Ethics For Computing Professionals",
+   3,
+   60,
+   52,
+   [
+    [
+     "Injadat, MohammadNoor",
+     "HUB-101",
+     "M",
+     "09:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "BCS401Lec2",
+   "Ethics For Computing Professionals",
+   3,
+   50,
+   50,
+   [
+    [
+     "Injadat, MohammadNoor",
+     "MGT-101",
+     "T",
+     "18:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "BCS402Lec1",
+   "Computability And Complexity",
+   3,
+   32,
+   31,
+   [
+    [
+     "Kolankeh, Arash",
+     "MGT-206",
+     "W",
+     "18:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "BCS410Prj1",
+   "Computer Science Project",
+   6,
+   60,
+   50,
+   [
+    [
+     "IP, IP",
+     "",
+     "N/A",
+     "",
+     ""
+    ]
+   ]
+  ],
+  [
+   "BSD311Lec1",
+   "Human Computer Interaction",
+   3,
+   40,
+   36,
+   [
+    [
+     "Injadat, MohammadNoor",
+     "MGT-203",
+     "R",
+     "18:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "BSD410Prj1",
+   "Software Design Project",
+   6,
+   10,
+   2,
+   [
+    [
+     "IP, IP",
+     "",
+     "N/A",
+     "",
+     ""
+    ]
+   ]
+  ],
+  [
+   "CYS401Lec1",
+   "Engineering Secure Software",
+   3,
+   24,
+   21,
+   [
+    [
+     "Seyam, Ahmed",
+     "HUB-118 Robotic Lab",
+     "W",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "Abuserrieh, Lobna",
+     "MGT-205",
+     "R",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "CYS412Lec1",
+   "Mobile And Wireless Security",
+   4,
+   32,
+   18,
+   [
+    [
+     "Khurana, Mehak",
+     "MGT-210",
+     "M",
+     "09:00",
+     "11:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "T",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "ENG102Lec1",
+   "Digital Logic",
+   3,
+   24,
+   14,
+   [
+    [
+     "Turker, Turker",
+     "HUB-117 Software Lab",
+     "T",
+     "13:00",
+     "14:59"
+    ],
+    [
+     "Turker, Turker",
+     "MGT-101",
+     "W",
+     "09:00",
+     "10:59"
+    ]
+   ]
+  ],
+  [
+   "ENG122Lab1",
+   "Engineering Graphics And Design",
+   1,
+   24,
+   2,
+   [
+    [
+     "Gharib, Mohamed",
+     "HUB-119",
+     "M",
+     "09:00",
+     "10:59"
+    ]
+   ]
+  ],
+  [
+   "ENG213Lec1",
+   "Electric Circuit I",
+   3,
+   18,
+   11,
+   [
+    [
+     "Turker, Turker",
+     "HUB-116 Electronic Lab",
+     "M",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "Turker, Turker",
+     "HUB-116 Electronic Lab",
+     "R",
+     "09:00",
+     "10:59"
+    ]
+   ]
+  ],
+  [
+   "ENG315Lec1",
+   "Control Systems",
+   3,
+   24,
+   10,
+   [
+    [
+     "Gharib, Mohamed",
+     "HUB-113",
+     "W",
+     "09:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "ENG316Lec1",
+   "Internet Of Things And Data Science",
+   3,
+   24,
+   2,
+   [
+    [
+     "IP, IP",
+     "MGT-210",
+     "M",
+     "16:00",
+     "17:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "T",
+     "11:00",
+     "12:59"
+    ]
+   ]
+  ],
+  [
+   "ENG317Lec1",
+   "Digital Signal Processing",
+   3,
+   24,
+   14,
+   [
+    [
+     "El Khatib, Ziad",
+     "HUB-113",
+     "R",
+     "09:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "ENG320IntCNET",
+   "Internship",
+   2,
+   10,
+   1,
+   [
+    [
+     "IP, IP",
+     "",
+     "N/A",
+     "",
+     ""
+    ]
+   ]
+  ],
+  [
+   "ENG320IntENG",
+   "Internship",
+   2,
+   10,
+   0,
+   [
+    [
+     "IP, IP",
+     "",
+     "N/A",
+     "",
+     ""
+    ]
+   ]
+  ],
+  [
+   "ENG410Lec1",
+   "Professional And Ethical Practice",
+   3,
+   32,
+   27,
+   [
+    [
+     "AlFutaisi, Najla",
+     "MGT-206",
+     "R",
+     "18:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "ENG411Prj1",
+   "Graduation Project-1",
+   2,
+   20,
+   17,
+   [
+    [
+     "IP, IP",
+     "",
+     "N/A",
+     "",
+     ""
+    ]
+   ]
+  ],
+  [
+   "ENG416Lec1",
+   "Professional And Engineering Ethics",
+   3,
+   32,
+   27,
+   [
+    [
+     "AlFutaisi, Najla",
+     "MGT-206",
+     "R",
+     "18:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "ENG420Int1",
+   "Internship",
+   3,
+   10,
+   1,
+   [
+    [
+     "IP, IP",
+     "",
+     "N/A",
+     "",
+     ""
+    ]
+   ]
+  ],
+  [
+   "IDM401Lec1",
+   "Smart Manufacturing Systems",
+   3,
+   32,
+   18,
+   [
+    [
+     "IP, IP",
+     "MGT-105",
+     "R",
+     "15:00",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "MAI501Lec1",
+   "Programming For AI Applications",
+   3,
+   24,
+   2,
+   [
+    [
+     "IP, IP",
+     "MGT-203",
+     "S",
+     "14:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "MAI502Lec1",
+   "Introduction To Artificial Intelligence",
+   3,
+   24,
+   2,
+   [
+    [
+     "IP, IP",
+     "MGT-103",
+     "F",
+     "14:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "MAI503Lec1",
+   "Applied Discrete Mathematics",
+   3,
+   24,
+   2,
+   [
+    [
+     "IP, IP",
+     "MGT-203",
+     "S",
+     "10:00",
+     "12:59"
+    ]
+   ]
+  ],
+  [
+   "MAI600Lec1",
+   "Mathematics And Statistics For AI",
+   3,
+   30,
+   16,
+   [
+    [
+     "Kamalov, Firuz",
+     "MGT-206",
+     "F",
+     "18:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "MAI601Lec1",
+   "Data Mining",
+   3,
+   30,
+   11,
+   [
+    [
+     "Elnashar, Ayman",
+     "MGT-206",
+     "F",
+     "15:00",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "MAI602Lec1",
+   "Machine Learning",
+   3,
+   30,
+   9,
+   [
+    [
+     "Garg, Sahil",
+     "MGT-206",
+     "S",
+     "10:00",
+     "12:59"
+    ]
+   ]
+  ],
+  [
+   "MAI603Lec1",
+   "Advanced Artificial Intelligence",
+   3,
+   30,
+   2,
+   [
+    [
+     "Elgazzar, Khalid",
+     "MGT-206",
+     "S",
+     "14:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "MAI652Lec1",
+   "Computer Vision",
+   3,
+   30,
+   8,
+   [
+    [
+     "El Messiry, Haytham",
+     "MGT-205",
+     "S",
+     "14:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "MAI656Lec1",
+   "Nature Language Processing",
+   3,
+   30,
+   5,
+   [
+    [
+     "Kolankeh, Arash",
+     "MGT-205",
+     "S",
+     "10:00",
+     "12:59"
+    ]
+   ]
+  ],
+  [
+   "MEC305Lec1",
+   "Mechanical Vibrations",
+   3,
+   24,
+   16,
+   [
+    [
+     "Gharib, Mohamed",
+     "MGT-203",
+     "T",
+     "13:00",
+     "14:59"
+    ],
+    [
+     "Gharib, Mohamed",
+     "HUB-104 Mechatronics Lab",
+     "W",
+     "13:00",
+     "14:59"
+    ]
+   ]
+  ],
+  [
+   "MEC415Lec1",
+   "Computer Integrated Manufacturing (CIM)",
+   3,
+   24,
+   24,
+   [
+    [
+     "El Khatib, Ziad",
+     "HUB-113",
+     "M",
+     "19:00",
+     "20:59"
+    ],
+    [
+     "El Khatib, Ziad",
+     "HUB-104 Mechatronics Lab",
+     "W",
+     "19:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "MEC421Lec1",
+   "Robotics",
+   3,
+   30,
+   21,
+   [
+    [
+     "El Khatib, Ziad",
+     "HUB-104 Mechatronics Lab",
+     "T",
+     "17:00",
+     "18:59"
+    ],
+    [
+     "El Khatib, Ziad",
+     "HUB-104 Mechatronics Lab",
+     "W",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "MTH112Lec1",
+   "Calculus 1",
+   3,
+   45,
+   45,
+   [
+    [
+     "IP, IP",
+     "HUB-114",
+     "M",
+     "09:00",
+     "09:59"
+    ],
+    [
+     "El Sayed, Ahmed Abdelaziz",
+     "HUB-114",
+     "MW",
+     "12:00",
+     "13:29"
+    ]
+   ]
+  ],
+  [
+   "MTH112Lec2",
+   "Calculus 1",
+   3,
+   45,
+   44,
+   [
+    [
+     "El Sayed, Ahmed Abdelaziz",
+     "HUB-114",
+     "MW",
+     "13:30",
+     "14:59"
+    ],
+    [
+     "IP, IP",
+     "MGT-204",
+     "M",
+     "17:00",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "MTH112Lec3",
+   "Calculus 1",
+   3,
+   35,
+   24,
+   [
+    [
+     "Elobaid, Rafida",
+     "MGT-103",
+     "T",
+     "16:30",
+     "17:59"
+    ],
+    [
+     "Elobaid, Rafida",
+     "MGT-204",
+     "R",
+     "09:00",
+     "09:59"
+    ],
+    [
+     "Elobaid, Rafida",
+     "HUB-114",
+     "R",
+     "16:30",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "MTH112LecARC 1",
+   "Calculus 1",
+   3,
+   32,
+   25,
+   [
+    [
+     "Alotaibi, Emran",
+     "MGT-102",
+     "M",
+     "13:30",
+     "14:59"
+    ],
+    [
+     "Alotaibi, Emran",
+     "MGT-106",
+     "W",
+     "12:00",
+     "13:29"
+    ],
+    [
+     "IP, IP",
+     "MGT-101",
+     "R",
+     "11:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "MTH114Lec1",
+   "Linear Algebra",
+   3,
+   37,
+   37,
+   [
+    [
+     "El Sayed, Ahmed Abdelaziz",
+     "MGT-208",
+     "TW",
+     "15:00",
+     "16:29"
+    ]
+   ]
+  ],
+  [
+   "MTH114Lec2",
+   "Linear Algebra",
+   3,
+   35,
+   24,
+   [
+    [
+     "El Sayed, Ahmed Abdelaziz",
+     "MGT-207",
+     "MR",
+     "09:00",
+     "10:29"
+    ]
+   ]
+  ],
+  [
+   "MTH114Lec3",
+   "Linear Algebra",
+   3,
+   35,
+   35,
+   [
+    [
+     "Rani, Rashmi",
+     "MGT-208",
+     "TW",
+     "16:30",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "MTH130Lec1",
+   "Probability And Statistics",
+   3,
+   35,
+   35,
+   [
+    [
+     "Elobaid, Rafida",
+     "MGT-107",
+     "MW",
+     "12:00",
+     "13:29"
+    ]
+   ]
+  ],
+  [
+   "MTH130Lec2",
+   "Probability And Statistics",
+   3,
+   35,
+   35,
+   [
+    [
+     "Elobaid, Rafida",
+     "MGT-208",
+     "MW",
+     "13:30",
+     "14:59"
+    ]
+   ]
+  ],
+  [
+   "MTH130Lec3",
+   "Probability And Statistics",
+   3,
+   35,
+   22,
+   [
+    [
+     "Elobaid, Rafida",
+     "MGT-207",
+     "MR",
+     "10:30",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "MTH203Lec1",
+   "Discrete Mathematics For Computing Science",
+   3,
+   45,
+   45,
+   [
+    [
+     "Mohamed, Tamer",
+     "MGT-208",
+     "MW",
+     "12:00",
+     "13:29"
+    ]
+   ]
+  ],
+  [
+   "MTH203Lec2",
+   "Discrete Mathematics For Computing Science",
+   3,
+   40,
+   40,
+   [
+    [
+     "Mohamed, Tamer",
+     "MGT-107",
+     "MW",
+     "13:30",
+     "14:59"
+    ]
+   ]
+  ],
+  [
+   "MTH212Lec1",
+   "Calculus 3",
+   3,
+   32,
+   15,
+   [
+    [
+     "Rani, Rashmi",
+     "MGT-210",
+     "M",
+     "13:30",
+     "14:59"
+    ],
+    [
+     "Rani, Rashmi",
+     "MGT-102",
+     "T",
+     "11:00",
+     "12:29"
+    ]
+   ]
+  ],
+  [
+   "NET105Lec1",
+   "Microprocessors And Microcontrollers",
+   3,
+   24,
+   22,
+   [
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "M",
+     "19:00",
+     "20:59"
+    ],
+    [
+     "Turker, Turker",
+     "MGT-204",
+     "W",
+     "11:00",
+     "12:59"
+    ]
+   ]
+  ],
+  [
+   "NET105Lec2",
+   "Microprocessors And Microcontrollers",
+   3,
+   24,
+   8,
+   [
+    [
+     "IP, IP",
+     "HUB-116 Electronic Lab",
+     "M",
+     "17:00",
+     "18:59"
+    ],
+    [
+     "Turker, Turker",
+     "MGT-204",
+     "W",
+     "11:00",
+     "12:59"
+    ]
+   ]
+  ],
+  [
+   "NET120Lec1",
+   "LAN Switching And Routing",
+   3,
+   24,
+   13,
+   [
+    [
+     "Faheem, Yasir",
+     "HUB-115 Networking Lab",
+     "T",
+     "17:00",
+     "18:59"
+    ],
+    [
+     "Faheem, Yasir",
+     "MGT-205",
+     "W",
+     "16:00",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "NET121LecCN1",
+   "Network Operating Systems",
+   3,
+   24,
+   8,
+   [
+    [
+     "Faheem, Yasir",
+     "MGT-203",
+     "T",
+     "11:00",
+     "12:59"
+    ],
+    [
+     "Faheem, Yasir",
+     "HUB-115 Networking Lab",
+     "W",
+     "11:00",
+     "12:59"
+    ]
+   ]
+  ],
+  [
+   "NET220LecC1",
+   "Network Security And Administration",
+   3,
+   24,
+   24,
+   [
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "T",
+     "19:00",
+     "20:59"
+    ],
+    [
+     "Khurana, Mehak",
+     "HUB-114",
+     "W",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "NET220LecC2",
+   "Network Security And Administration",
+   3,
+   24,
+   24,
+   [
+    [
+     "Khurana, Mehak",
+     "HUB-107",
+     "T",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-117 Software Lab",
+     "W",
+     "13:00",
+     "14:59"
+    ]
+   ]
+  ],
+  [
+   "NET221Lec1",
+   "Communication Technology",
+   3,
+   24,
+   7,
+   [
+    [
+     "eltawab, Samy",
+     "MGT-106",
+     "M",
+     "18:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "NET403Lec1",
+   "Mobile Security",
+   3,
+   32,
+   18,
+   [
+    [
+     "Khurana, Mehak",
+     "MGT-210",
+     "M",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-118 Robotic Lab",
+     "T",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "NET410Lec1",
+   "Enterprise Network Design",
+   3,
+   24,
+   20,
+   [
+    [
+     "Faheem, Yasir",
+     "HUB-115 Networking Lab",
+     "T",
+     "13:00",
+     "14:59"
+    ],
+    [
+     "Faheem, Yasir",
+     "HUB-101",
+     "R",
+     "19:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "NET440Prj1",
+   "CNET Project 1",
+   2,
+   20,
+   16,
+   [
+    [
+     "IP, IP",
+     "",
+     "N/A",
+     "",
+     ""
+    ]
+   ]
+  ],
+  [
+   "NET441Prj1",
+   "CNET Project 2",
+   2,
+   10,
+   0,
+   [
+    [
+     "IP, IP",
+     "",
+     "N/A",
+     "",
+     ""
+    ]
+   ]
+  ],
+  [
+   "PHY012Lec1",
+   "Pre-Physics",
+   0,
+   18,
+   3,
+   [
+    [
+     "Saidi, Ziyad",
+     "HUB-116 Electronic Lab",
+     "W",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "Saidi, Ziyad",
+     "HUB-116 Electronic Lab",
+     "W",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "RAI401Lec1",
+   "Robotics",
+   3,
+   30,
+   21,
+   [
+    [
+     "El Khatib, Ziad",
+     "HUB-104 Mechatronics Lab",
+     "T",
+     "17:00",
+     "18:59"
+    ],
+    [
+     "El Khatib, Ziad",
+     "HUB-104 Mechatronics Lab",
+     "W",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "SCI210Lec1",
+   "Modern Physics",
+   3,
+   16,
+   14,
+   [
+    [
+     "Turker, Turker",
+     "MGT-203",
+     "T",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "Aboueldahab, Hussein",
+     "HUB-116 Electronic Lab",
+     "R",
+     "17:00",
+     "18:59"
+    ]
+   ]
+  ],
+  [
+   "SCI210Lec2",
+   "Modern Physics",
+   3,
+   16,
+   15,
+   [
+    [
+     "Turker, Turker",
+     "MGT-203",
+     "T",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "Aboueldahab, Hussein",
+     "HUB-116 Electronic Lab",
+     "W",
+     "19:00",
+     "20:59"
+    ]
+   ]
+  ],
+  [
+   "SCI220Lec1",
+   "Engineering Mechanics",
+   3,
+   30,
+   21,
+   [
+    [
+     "Gharib, Mohamed",
+     "MGT-105",
+     "T",
+     "15:00",
+     "17:59"
+    ]
+   ]
+  ],
+  [
+   "SWS110Lec1",
+   "Programming 1",
+   3,
+   24,
+   25,
+   [
+    [
+     "Abuserrieh, Lobna",
+     "HUB-117 Software Lab",
+     "T",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "Abuserrieh, Lobna",
+     "MGT-204",
+     "R",
+     "10:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "SWS111Lec1",
+   "Programming 2",
+   3,
+   22,
+   22,
+   [
+    [
+     "Hussein, Ahmed",
+     "MGT-204",
+     "M",
+     "09:00",
+     "10:59"
+    ],
+    [
+     "Hussein, Ahmed",
+     "HUB-117 Software Lab",
+     "R",
+     "10:00",
+     "11:59"
+    ]
+   ]
+  ],
+  [
+   "SWS111Lec2",
+   "Programming 2",
+   3,
+   24,
+   25,
+   [
+    [
+     "eltawab, Samy",
+     "HUB-117 Software Lab",
+     "M",
+     "15:00",
+     "16:59"
+    ],
+    [
+     "eltawab, Samy",
+     "MGT-204",
+     "R",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ],
+  [
+   "SWS315Lec1",
+   "Mobile Application Development",
+   3,
+   24,
+   3,
+   [
+    [
+     "Hussein, Ahmed",
+     "MGT-204",
+     "M",
+     "13:00",
+     "14:59"
+    ],
+    [
+     "IP, IP",
+     "HUB-115 Networking Lab",
+     "R",
+     "15:00",
+     "16:59"
+    ]
+   ]
+  ]
+ ]
+}
