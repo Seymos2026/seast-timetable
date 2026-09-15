@@ -368,7 +368,7 @@
   .roomhint:empty{display:none}
   .roomhint b{color:var(--ink);font-weight:600}
   .linkbtn[disabled]{opacity:.45;cursor:not-allowed}
-  #printBtn:not([disabled]){border-color:var(--accent);color:var(--accent-ink)}
+  #printBtn:not([disabled]),#printLabsBtn{border-color:var(--accent);color:var(--accent-ink)}
 
   /* ---------- printable room sheet (A4 landscape) ---------- */
   .sheet{display:none}
@@ -378,7 +378,12 @@
     body{background:#fff;color:#111}
     .wrap{max-width:none;padding:0}
     .mast,.controls,.status,.roomhint,#out,#locOut,.updater,footer{display:none!important}
-    .sheet{display:flex;flex-direction:column;height:186mm;font-family:"Source Sans 3",Arial,sans-serif}
+    .sheet{display:block;font-family:"Source Sans 3",Arial,sans-serif}
+    .sheetpage{
+      display:flex;flex-direction:column;height:186mm;
+      break-after:page;page-break-after:always;break-inside:avoid;
+    }
+    .sheetpage:last-child{break-after:auto;page-break-after:auto}
   }
   .sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .sh-title{
@@ -501,6 +506,7 @@
       </div>
       <select id="room" aria-label="Room"></select>
       <button class="linkbtn" id="printBtn" disabled>Print room sheet</button>
+      <button class="linkbtn" id="printLabsBtn">Print all SEAST lab rooms</button>
       <input type="search" id="q" placeholder="Course code or name" aria-label="Search courses">
       <button class="linkbtn" id="reset">Clear</button>
       <button class="nowbtn" id="nowBtn" aria-pressed="false"><span class="dot"></span>Running now</button>
@@ -775,6 +781,7 @@ roomSel.addEventListener("change", e => {
   buildSheet();
   render();
 });
+document.getElementById("printLabsBtn").addEventListener("click", printAllLabs);
 document.getElementById("printBtn").addEventListener("click", () => {
   if (!state.room) return;
   buildSheet();
@@ -1093,12 +1100,8 @@ function courseLine(codes, names){
   return codes.join(" = ") + " - " + names.join(" / ");
 }
 
-function buildSheet(){
-  const sheet = document.getElementById("sheet");
-  const hint = document.getElementById("roomhint");
-  if (!state.room){ sheet.innerHTML = ""; hint.innerHTML = ""; return; }
-
-  const room = state.room;
+/* one room's sheet, as one printed page */
+function sheetHTML(room){
   const groups = roomGroups(room);
 
   // columns: Mon–Thu always, plus Fri/Sat when this room is used then
@@ -1129,7 +1132,7 @@ function buildSheet(){
   const sessions = MEET.filter(m => m.room === room && m.s >= 0).length;
   const usedDays = new Set(groups.map(g => g.day)).size;
 
-  sheet.innerHTML =
+  const html =
     '<h1 class="sh-title">Lab Weekly Schedules - Fall 2026-27</h1>' +
     '<h2 class="sh-room">' + esc(room) + '</h2>' +
     '<hr class="sh-rule">' +
@@ -1142,10 +1145,39 @@ function buildSheet(){
     'codes joined with “=” are one class taught under two course codes</span>' +
     '<span>Printed ' + printed + '</span></p>';
 
-  hint.innerHTML = '<b>' + esc(room) + '</b> · ' + sessions + ' session' + (sessions === 1 ? "" : "s") +
-    ' across ' + usedDays + ' day' + (usedDays === 1 ? "" : "s") +
+  return {html, clashes, sessions, usedDays};
+}
+
+/* every room whose name marks it as a lab, in room order */
+function labRooms(){
+  return [...new Set(MEET.filter(m => /lab/i.test(m.room)).map(m => m.room))]
+    .sort((a,b) => a.localeCompare(b));
+}
+
+function buildSheet(){
+  const sheet = document.getElementById("sheet");
+  const hint = document.getElementById("roomhint");
+  if (!state.room){ sheet.innerHTML = ""; hint.innerHTML = ""; return; }
+
+  const s = sheetHTML(state.room);
+  sheet.innerHTML = '<section class="sheetpage">' + s.html + '</section>';
+
+  hint.innerHTML = '<b>' + esc(state.room) + '</b> · ' + s.sessions + ' session' + (s.sessions === 1 ? "" : "s") +
+    ' across ' + s.usedDays + ' day' + (s.usedDays === 1 ? "" : "s") +
     ' — “Print room sheet” gives the one-page A4 landscape sheet for the door' +
-    (clashes ? ' · ' + clashes + ' slot' + (clashes === 1 ? " has" : "s have") + ' two bookings at once' : '');
+    (s.clashes ? ' · ' + s.clashes + ' slot' + (s.clashes === 1 ? " has" : "s have") + ' two bookings at once' : '');
+}
+
+/* all lab rooms, one page each, in a single print job */
+function printAllLabs(){
+  const sheet = document.getElementById("sheet");
+  const rooms = labRooms();
+  if (!rooms.length) return;
+  sheet.innerHTML = rooms.map(r => '<section class="sheetpage">' + sheetHTML(r).html + '</section>').join("");
+  const restore = () => { buildSheet(); window.removeEventListener("afterprint", restore); };
+  window.addEventListener("afterprint", restore);
+  setTimeout(restore, 60000);   // fallback if afterprint never fires
+  window.print();
 }
 
 /* ---------- locate me: is this instructor free right now? ---------- */
@@ -1418,7 +1450,7 @@ async function loadExternal(){
 }
 
 /* ---------- init ---------- */
-const BUILD = "build 10 · data 15 Sep 2026";
+const BUILD = "build 11 · data 15 Sep 2026";
 document.getElementById("buildTag").textContent = BUILD;
 console.log("SEAST timetable — " + BUILD);
 document.getElementById("secCount").textContent = RAW.length;
