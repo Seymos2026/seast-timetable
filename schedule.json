@@ -1,5 +1,5 @@
 {
- "savedAt": "2026-09-25T10:09:37.714Z",
+ "savedAt": "2026-10-05T15:58:24.651Z",
  "term": "Fall 2026-27",
  "sections": [
   [
@@ -381,7 +381,7 @@
    [
     [
      "Injadat, MohammadNoor",
-     "MGT-208",
+     "MGT-203",
      "W",
      "09:00",
      "11:59"
@@ -404,7 +404,7 @@
    [
     [
      "Injadat, MohammadNoor",
-     "MGT-208",
+     "MGT-203",
      "W",
      "09:00",
      "11:59"
@@ -765,7 +765,7 @@
    "Human Computer Interaction",
    3,
    40,
-   36,
+   37,
    [
     [
      "Injadat, MohammadNoor",
@@ -1604,7 +1604,7 @@
    [
     [
      "El Tawab, Samy",
-     "MGT-106",
+     "HUB-115 Networking Lab",
      "M",
      "18:00",
      "20:59"

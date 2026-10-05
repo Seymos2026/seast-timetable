@@ -463,10 +463,13 @@
     .mast,.controls,.status,.roomhint,#out,#locOut,.avail,.updater,footer{display:none!important}
     .sheet{display:block;font-family:"Source Sans 3",Arial,sans-serif}
     .sheetpage{
-      display:flex;flex-direction:column;height:186mm;
+      display:block;
       break-after:page;page-break-after:always;break-inside:avoid;
     }
     .sheetpage:last-child{break-after:auto;page-break-after:auto}
+    .sh-foot{display:none!important}       /* no footer line, so nothing spills to a second page */
+    .sh-table{flex:none}
+    html,body{height:auto}
   }
   .sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .sh-title{
@@ -488,7 +491,7 @@
   }
   .sh-table th.t-time{width:19%}
   .sh-table td{
-    border:.5pt solid #D3DAE3;padding:2.2mm 2mm;text-align:center;vertical-align:middle;height:21mm;
+    border:.5pt solid #D3DAE3;padding:2.2mm 2mm;text-align:center;vertical-align:middle;height:19mm;
   }
   .sh-table td.t-time{
     background:#E9F0F8;font-weight:600;font-size:9.5pt;color:#333;
@@ -685,8 +688,8 @@ let RAW = [
 ["BCS202Lec4","Introduction To Computing Science II",3,24,24,[["Aboueldahab, Hussein","HUB-117 Software Lab","M","19:00","20:59"],["El Tawab, Samy","MGT-204","R","15:00","16:59"]]],
 ["BCS301Lec1","Operating Systems",4,22,19,[["Aboueldahab, Hussein","HUB-118 Robotic Lab","W","13:00","14:59"],["El Messiry, Haytham","MGT-208","R","09:00","11:59"]]],
 ["BCS301Lec2","Operating Systems",4,22,18,[["Aboueldahab, Hussein","HUB-117 Software Lab","M","13:00","14:59"],["El Messiry, Haytham","MGT-208","R","09:00","11:59"]]],
-["BCS301Lec3","Operating Systems",4,22,22,[["Injadat, MohammadNoor","MGT-208","W","09:00","11:59"],["Aboueldahab, Hussein","HUB-118 Robotic Lab","R","15:00","16:59"]]],
-["BCS301Lec4","Operating Systems",4,22,15,[["Injadat, MohammadNoor","MGT-208","W","09:00","11:59"],["Seyam, Ahmed","HUB-117 Software Lab","R","17:00","18:59"]]],
+["BCS301Lec3","Operating Systems",4,22,22,[["Injadat, MohammadNoor","MGT-203","W","09:00","11:59"],["Aboueldahab, Hussein","HUB-118 Robotic Lab","R","15:00","16:59"]]],
+["BCS301Lec4","Operating Systems",4,22,15,[["Injadat, MohammadNoor","MGT-203","W","09:00","11:59"],["Seyam, Ahmed","HUB-117 Software Lab","R","17:00","18:59"]]],
 ["BCS303Lec1","Security Principles And Practices",4,24,21,[["Seyam, Ahmed","HUB-118 Robotic Lab","T","19:00","20:59"],["Khurana, Mehak","HUB-114","W","15:00","17:59"]]],
 ["BCS303Lec2","Security Principles And Practices",4,20,23,[["Seyam, Ahmed","HUB-118 Robotic Lab","M","15:00","16:59"],["Khurana, Mehak","HUB-114","W","15:00","17:59"]]],
 ["BCS303Lec3","Security Principles And Practices",4,20,15,[["Khurana, Mehak","HUB-107","T","09:00","11:59"],["Seyam, Ahmed","HUB-117 Software Lab","R","19:00","20:59"]]],
@@ -704,7 +707,7 @@ let RAW = [
 ["BCS402Lec1","Computability And Complexity",3,32,31,[["Kolankeh, Arash","MGT-206","W","18:00","20:59"]]],
 ["BCS410Prj1","Computer Science Project",6,60,63,[["Abuserrieh, Lobna","","N/A","",""]]],
 ["BSD310Lec1","Game Design",3,24,6,[["Hussein, Ahmed","MGT-206","W","09:00","11:59"]]],
-["BSD311Lec1","Human Computer Interaction",3,40,36,[["Injadat, MohammadNoor","MGT-203","R","18:00","20:59"]]],
+["BSD311Lec1","Human Computer Interaction",3,40,37,[["Injadat, MohammadNoor","MGT-203","R","18:00","20:59"]]],
 ["BSD410Prj1","Software Design Project",6,10,2,[["Abuserrieh, Lobna","","N/A","",""]]],
 ["CYS401Lec1","Engineering Secure Software",3,24,22,[["Seyam, Ahmed","HUB-118 Robotic Lab","W","15:00","16:59"],["Abuserrieh, Lobna","MGT-211","R","15:00","16:59"]]],
 ["CYS412Lec1","Mobile And Wireless Security",4,32,21,[["Khurana, Mehak","MGT-210","M","09:00","11:59"],["Seyam, Ahmed","HUB-118 Robotic Lab","T","15:00","16:59"]]],
@@ -747,7 +750,7 @@ let RAW = [
 ["NET220LecC1","Network Security And Administration",3,24,21,[["Seyam, Ahmed","HUB-118 Robotic Lab","T","19:00","20:59"],["Khurana, Mehak","HUB-114","W","15:00","16:59"]]],
 ["NET220LecC2","Network Security And Administration",3,24,24,[["Khurana, Mehak","HUB-107","T","09:00","10:59"],["Seyam, Ahmed","HUB-117 Software Lab","W","13:00","14:59"]]],
 ["NET220LecC3","Network Security And Administration",3,50,3,[["Khurana, Mehak","HUB-107","T","09:00","10:59"],["Seyam, Ahmed","HUB-118 Robotic Lab","T","19:00","20:59"]]],
-["NET221Lec1","Communication Technology",3,24,7,[["El Tawab, Samy","MGT-106","M","18:00","20:59"]]],
+["NET221Lec1","Communication Technology",3,24,7,[["El Tawab, Samy","HUB-115 Networking Lab","M","18:00","20:59"]]],
 ["NET403Lec1","Mobile Security",3,32,21,[["Khurana, Mehak","MGT-210","M","09:00","10:59"],["Seyam, Ahmed","HUB-118 Robotic Lab","T","15:00","16:59"]]],
 ["NET410Lec1","Enterprise Network Design",3,24,23,[["Faheem, Yasir","HUB-115 Networking Lab","T","13:00","14:59"],["Faheem, Yasir","HUB-101","R","19:00","20:59"]]],
 ["NET440Prj1","CNET Project 1",2,20,20,[["Abuserrieh, Lobna","","N/A","",""]]],
@@ -1501,7 +1504,7 @@ document.getElementById("availGo").addEventListener("click", checkAvailability);
 
 /* ---------- update from the portal (paste in, no login needed) ---------- */
 const LSKEY = "seast.schedule.v1";
-let DATA_SRC = "portal snapshot · 25 Sep 2026";
+let DATA_SRC = "portal snapshot · 5 Oct 2026";
 let pending = null;
 
 function t24(s){
@@ -1686,7 +1689,7 @@ async function loadExternal(){
 }
 
 /* ---------- init ---------- */
-const BUILD = "build 14 · data 25 Sep 2026";
+const BUILD = "build 16 · data 5 Oct 2026";
 document.getElementById("buildTag").textContent = BUILD;
 console.log("SEAST timetable — " + BUILD);
 document.getElementById("secCount").textContent = RAW.length;
