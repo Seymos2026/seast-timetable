@@ -456,7 +456,7 @@
   /* ---------- printable room sheet (A4 landscape) ---------- */
   .sheet{display:none}
   @media print{
-    @page{size:A4 landscape;margin:8mm}
+    @page{size:297mm 210mm;margin:8mm}      /* explicit mm beats "A4 landscape" in some engines */
     :root{color-scheme:light}
     body{background:#fff;color:#111}
     .wrap{max-width:none;padding:0}
@@ -471,7 +471,13 @@
     .sh-table{flex:none}
     html,body{height:auto}
   }
-  .sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet,.sheet *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  @media print{
+    .sh-table{page-break-inside:auto}
+    .sh-table thead{display:table-header-group}
+    .sh-table tr{break-inside:avoid;page-break-inside:avoid}
+    .sheetpage{width:100%;max-width:100%;overflow:visible}
+  }
   .sh-title{
     font-family:Archivo,Arial,sans-serif;font-size:19pt;font-weight:700;color:#333;
     text-align:center;margin:0 0 4mm;letter-spacing:-.01em;
@@ -1689,7 +1695,7 @@ async function loadExternal(){
 }
 
 /* ---------- init ---------- */
-const BUILD = "build 16 · data 5 Oct 2026";
+const BUILD = "build 17 · data 5 Oct 2026";
 document.getElementById("buildTag").textContent = BUILD;
 console.log("SEAST timetable — " + BUILD);
 document.getElementById("secCount").textContent = RAW.length;
