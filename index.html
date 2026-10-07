@@ -717,11 +717,11 @@ let RAW = [
 ["BSD410Prj1","Software Design Project",6,10,2,[["Abuserrieh, Lobna","","N/A","",""]]],
 ["CYS401Lec1","Engineering Secure Software",3,24,22,[["Seyam, Ahmed","HUB-118 Robotic Lab","W","15:00","16:59"],["Abuserrieh, Lobna","MGT-211","R","15:00","16:59"]]],
 ["CYS412Lec1","Mobile And Wireless Security",4,32,21,[["Khurana, Mehak","MGT-210","M","09:00","11:59"],["Seyam, Ahmed","HUB-118 Robotic Lab","T","15:00","16:59"]]],
-["ENG102Lec1","Digital Logic",3,24,17,[["Turker, Turker","HUB-117 Software Lab","T","13:00","14:59"],["Turker, Turker","MGT-102","W","09:00","10:59"]]],
+["ENG102Lec1","Digital Logic",3,24,17,[["Turker, Turker","HUB-116 Electronic Lab","T","13:00","14:59"],["Turker, Turker","MGT-102","W","09:00","10:59"]]],
 ["ENG213Lec1","Electric Circuit I",3,18,10,[["Turker, Turker","HUB-116 Electronic Lab","M","15:00","16:59"],["Turker, Turker","MGT-105","R","09:00","10:59"]]],
 ["ENG315Lec1","Control Systems",3,24,13,[["Gharib, Mohamed","HUB-113","W","09:00","11:59"]]],
 ["ENG317Lec1","Digital Signal Processing",3,24,16,[["El Khatib, Ziad","HUB-113","R","09:00","11:59"]]],
-["ENG320IntCNET","Internship",2,10,0,[["Faheem, Yasir","","N/A","",""]]],
+["ENG320IntCNET","Internship",2,10,1,[["Faheem, Yasir","","N/A","",""]]],
 ["ENG400PrjEE1","Graduation Project-1",2,10,8,[["Gharib, Mohamed","","N/A","",""]]],
 ["ENG410Lec1","Professional And Ethical Practice",3,32,32,[["AlFutaisi, Najla","MGT-206","R","18:00","20:59"]]],
 ["ENG411Prj1","Graduation Project-1",2,20,17,[["Gharib, Mohamed","","N/A","",""]]],
@@ -1510,7 +1510,7 @@ document.getElementById("availGo").addEventListener("click", checkAvailability);
 
 /* ---------- update from the portal (paste in, no login needed) ---------- */
 const LSKEY = "seast.schedule.v1";
-let DATA_SRC = "portal snapshot · 5 Oct 2026";
+let DATA_SRC = "portal snapshot · 7 Oct 2026";
 let pending = null;
 
 function t24(s){
@@ -1695,7 +1695,7 @@ async function loadExternal(){
 }
 
 /* ---------- init ---------- */
-const BUILD = "build 17 · data 5 Oct 2026";
+const BUILD = "build 18 · data 7 Oct 2026";
 document.getElementById("buildTag").textContent = BUILD;
 console.log("SEAST timetable — " + BUILD);
 document.getElementById("secCount").textContent = RAW.length;
